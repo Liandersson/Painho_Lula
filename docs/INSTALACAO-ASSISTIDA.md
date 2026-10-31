@@ -16,7 +16,7 @@ Se esses dados ainda não estiverem na conversa, abra com exatamente:
 
 O IP da TV é usado para conectar e instalar. O IP local do computador/notebook deve ser cadastrado no campo Host PC do Developer Mode da TV. Se a pessoa não souber o IP do computador, identifique-o pela rota até a TV e mostre o endereço encontrado para ela conferir, sem exigir que procure sozinha. Use o endereço da rede local, não o IP público da internet.
 
-Aceite respostas em linguagem comum. Reaproveite o que o usuário já informou; não pergunte de novo. Se não souber o IP, indique onde vê-lo nas configurações de rede. Se não souber ativar o modo, guie uma tela de cada vez pelo tutorial. Explique que TV e computador precisam estar na mesma rede.
+Aceite respostas em linguagem comum. Reaproveite o que o usuário já informou; não pergunte de novo. Se não souber o IP, indique onde vê-lo nas configurações de rede. Se não souber ativar o modo, ofereça o vídeo de exemplo https://www.youtube.com/watch?v=F8kkdIh1TGY e guie uma tela de cada vez pela seção 3 de `docs/INSTALAR-NA-TV.md`. Use o IP local do computador no campo Host PC; aguarde a confirmação de ativação e reinicialização. Explique que TV e computador precisam estar na mesma rede.
 
 Não acrescente ao formulário inicial perguntas sobre SDK, Python, perfil, DUID, firmware ou pastas. Não prometa que só essas respostas bastarão num computador novo: login Samsung, emissão de certificado, contratos e permissões podem exigir participação depois, somente quando necessários.
 

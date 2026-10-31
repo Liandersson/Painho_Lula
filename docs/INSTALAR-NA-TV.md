@@ -52,14 +52,28 @@ Na TV, abra Configurações → Rede → Status da rede → Configurações de I
 
 ## 3. Ativar Developer Mode na TV
 
-1. Abra **Apps** na TV.
-2. Na tela **Apps Settings/Configurações de Apps**, digite **1 2 3 4 5** usando o controle ou o teclado numérico na tela. Em alguns firmwares o painel abre diretamente em Apps.
-3. No painel **Developer Mode**, selecione **On/Ativado**.
-4. No campo de IP do computador/Host PC, digite o **IP do computador** anotado na etapa 2.
-5. Confirme e reinicie a TV conforme a instrução exibida. Apenas sair de Apps ou colocar em espera pode não bastar; siga o procedimento de reinicialização indicado para seu modelo.
-6. Volte ao painel e confira se o modo continua ativado e o IP está correto.
+### Vídeo de exemplo
 
-Isso é o modo de desenvolvimento de Apps. Não entre no menu de serviço da TV. Se o painel não abrir, consulte o [procedimento oficial Samsung](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html) para seu firmware.
+[▶ Assistir ao vídeo: como entrar no Developer Mode da Samsung TV](https://www.youtube.com/watch?v=F8kkdIh1TGY)
+
+Use o vídeo indicado como referência visual. Os menus podem variar conforme modelo e atualização; o passo a passo abaixo segue a [documentação oficial Samsung](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html).
+
+### Faça pelo controle da TV
+
+1. Deixe TV e computador na mesma rede.
+2. Aperte **Home** e abra **Apps**.
+3. Entre em **Configurações de Apps / App Settings**.
+4. Digite **1 → 2 → 3 → 4 → 5** pelo controle ou teclado numérico na tela, sem abrir a pesquisa.
+5. No painel **Developer Mode**, marque **On / Ativado**.
+6. Em **Host PC IP / IP do computador**, informe o **IP local do PC/notebook** usado para instalar.
+7. Confirme em **OK** e reinicie a TV conforme a mensagem exibida.
+8. Abra Apps novamente e confira a indicação **Develop Mode** e o IP cadastrado.
+
+**Não confunda:** IP do computador vai nesse painel; IP da TV será usado pelo instalador.
+
+Se o painel não abrir, confira se está em Configurações de Apps. Se as telas forem diferentes, consulte o guia oficial. Este procedimento não usa o menu de serviço da TV.
+
+Quando terminar, diga ao assistente: **“Developer Mode ativado e TV reiniciada.”**
 
 ## 4. Preparar o Tizen Studio no Linux
 

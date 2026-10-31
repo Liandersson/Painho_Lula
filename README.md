@@ -25,6 +25,8 @@ Só colar o link não garante iniciar uma instalação: o pedido acima deixa sua
 
 O ZIP não é instalado por pendrive nem aberto no navegador da TV. Não existe um WGT universal: cada usuário precisa assinar para o DUID da própria TV. Esta distribuição não está na loja Samsung.
 
+[▶ Vídeo de exemplo para ativar o Developer Mode](https://www.youtube.com/watch?v=F8kkdIh1TGY) · [Passo a passo pelo controle](docs/INSTALAR-NA-TV.md#3-ativar-developer-mode-na-tv)
+
 ## Requisitos e compatibilidade
 
 - Samsung TV com **Tizen 9.0+**. Verifique o sistema; o ano do modelo não basta.
