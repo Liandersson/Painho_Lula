@@ -1,0 +1,105 @@
+diff --git a/dist/src/am-lyrics.js b/dist/src/am-lyrics.js
+index a2709c1d062dfb0f24e8b52a0444f284fd1b47b0..ea9cdc021ae72a9367e5476f717df97901df15d0 100644
+--- a/dist/src/am-lyrics.js
++++ b/dist/src/am-lyrics.js
+@@ -469,7 +469,9 @@ class AmLyrics extends i {
+             this.isLoading = false;
+             return;
+           }
+-          const result = await GoogleService.translate(textToTranslate, 'en');
++          const sourceLyrics = this.lyrics;
++          const result = await GoogleService.translate(textToTranslate, this.getAttribute('translation-language') || 'en');
++          if (this.lyrics !== sourceLyrics || !this.isConnected) return;
+           const translations = Array.isArray(result) ? result : [result];
+           const newLyrics = this.lyrics.map((line, index) => {
+             if (line.translation) return line;
+@@ -813,6 +815,9 @@ class AmLyrics extends i {
+         this.isProgrammaticScroll = false;
+       }, 100);
+     }
++    if (this.hasAttribute('auto-translate') && this.getAttribute('translation-language')) {
++      this.lyrics = this.lyrics.map(line => ({ ...line, translation: undefined }));
++    }
+     if (!this.noAutoAlternates) await this.autoProcessLyrics();
+   }
+   async autoProcessLyrics() {
+@@ -820,7 +825,8 @@ class AmLyrics extends i {
+     if (this.showRomanization) {
+       await this.applyRomanization();
+     }
+-    if (this.showTranslation && !this.noAutoAlternates) {
++    if ((this.showTranslation || this.hasAttribute('auto-translate')) && !this.noAutoAlternates) {
++      this.showTranslation = true;
+       await this.applyTranslation();
+     }
+   }
+diff --git a/dist/src/react.js b/dist/src/react.js
+index fdb481cef2b2f898bbfea7a5a983c6d8353b9273..25fa18a0d829f438b6a31a57cf5b49c5104f2b6e 100644
+--- a/dist/src/react.js
++++ b/dist/src/react.js
+@@ -472,7 +472,9 @@ let AmLyrics$1 = class AmLyrics extends i {
+             this.isLoading = false;
+             return;
+           }
+-          const result = await GoogleService.translate(textToTranslate, 'en');
++          const sourceLyrics = this.lyrics;
++          const result = await GoogleService.translate(textToTranslate, this.getAttribute('translation-language') || 'en');
++          if (this.lyrics !== sourceLyrics || !this.isConnected) return;
+           const translations = Array.isArray(result) ? result : [result];
+           const newLyrics = this.lyrics.map((line, index) => {
+             if (line.translation) return line;
+@@ -816,6 +818,9 @@ let AmLyrics$1 = class AmLyrics extends i {
+         this.isProgrammaticScroll = false;
+       }, 100);
+     }
++    if (this.hasAttribute('auto-translate') && this.getAttribute('translation-language')) {
++      this.lyrics = this.lyrics.map(line => ({ ...line, translation: undefined }));
++    }
+     if (!this.noAutoAlternates) await this.autoProcessLyrics();
+   }
+   async autoProcessLyrics() {
+@@ -823,7 +828,8 @@ let AmLyrics$1 = class AmLyrics extends i {
+     if (this.showRomanization) {
+       await this.applyRomanization();
+     }
+-    if (this.showTranslation && !this.noAutoAlternates) {
++    if ((this.showTranslation || this.hasAttribute('auto-translate')) && !this.noAutoAlternates) {
++      this.showTranslation = true;
+       await this.applyTranslation();
+     }
+   }
+diff --git a/src/AmLyrics.ts b/src/AmLyrics.ts
+index 0ea55534afb75515e82d217845e88da8b71cf498..e059d7b6e0f1e9922a1c9b069626d25943509493 100644
+--- a/src/AmLyrics.ts
++++ b/src/AmLyrics.ts
+@@ -2186,7 +2186,9 @@ export class AmLyrics extends LitElement {
+             return;
+           }
+ 
+-          const result = await GoogleService.translate(textToTranslate, 'en');
++          const sourceLyrics = this.lyrics;
++          const result = await GoogleService.translate(textToTranslate, this.getAttribute('translation-language') || 'en');
++          if (this.lyrics !== sourceLyrics || !this.isConnected) return;
+           const translations = Array.isArray(result) ? result : [result];
+ 
+           const newLyrics = this.lyrics.map((line, index) => {
+@@ -2840,6 +2842,9 @@ export class AmLyrics extends LitElement {
+       }, 100);
+     }
+ 
++    if (this.hasAttribute('auto-translate') && this.getAttribute('translation-language')) {
++      this.lyrics = this.lyrics.map(line => ({ ...line, translation: undefined }));
++    }
+     if (!this.noAutoAlternates) await this.autoProcessLyrics();
+   }
+ 
+@@ -2848,7 +2853,8 @@ export class AmLyrics extends LitElement {
+     if (this.showRomanization) {
+       await this.applyRomanization();
+     }
+-    if (this.showTranslation && !this.noAutoAlternates) {
++    if ((this.showTranslation || this.hasAttribute('auto-translate')) && !this.noAutoAlternates) {
++      this.showTranslation = true;
+       await this.applyTranslation();
+     }
+   }

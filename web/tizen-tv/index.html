@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#101115" />
+    <title>Painho Lula TV</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <header class="topbar">
+      <div class="brand">
+        <img src="icon.png" alt="" />
+        <div><strong>Painho Lula</strong><span>Music para sua TV</span></div>
+      </div>
+      <div class="top-meta"><button id="full-app-button" class="top-app-button" type="button" data-focusable>App completa</button><span class="live-dot"></span><span id="source-label">Conecte um USB</span></div>
+    </header>
+
+    <section id="full-app-view" class="full-app-view panel" hidden aria-label="Web app Painho Lula completa">
+      <iframe id="full-app-frame" title="Web app Painho Lula completa" src="full-app/index.html"></iframe>
+      <p id="full-app-missing" hidden>O pacote da interface completa ainda não foi gerado. Siga o comando de compilação no README.</p>
+    </section>
+
+    <main class="layout">
+      <section class="library-panel panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">SUA MÚSICA</p><h1>Biblioteca</h1></div>
+          <button id="refresh-button" class="icon-button" type="button" data-focusable aria-label="Atualizar dispositivos USB" title="Atualizar USB">↻</button>
+        </div>
+        <nav class="tabs" aria-label="Fontes de música">
+          <button class="tab active" type="button" data-view="usb" data-focusable>USB</button>
+          <button class="tab" type="button" data-view="stream" data-focusable>URL de áudio</button>
+        </nav>
+
+        <div id="usb-view" class="view-content">
+          <div id="storage-list" class="storage-list" aria-label="Dispositivos USB"></div>
+          <div class="browser-heading">
+            <button id="up-button" class="back-button" type="button" data-focusable hidden>← Pasta anterior</button>
+            <div id="breadcrumb" class="breadcrumb">Nenhum dispositivo selecionado</div>
+          </div>
+          <div id="file-list" class="file-list" aria-label="Músicas e pastas"></div>
+        </div>
+
+        <div id="stream-view" class="view-content stream-view" hidden>
+          <div class="stream-copy">
+            <p class="eyebrow">FONTE COMPATÍVEL</p>
+            <h2>Reproduza um endereço de áudio</h2>
+            <p>Use um link direto para um arquivo/stream de áudio que você possa acessar. O endereço fica apenas nesta TV.</p>
+          </div>
+          <label for="stream-url">Endereço do áudio</label>
+          <input id="stream-url" type="url" autocomplete="off" spellcheck="false" placeholder="https://seu-servidor/musica.mp3" data-focusable />
+          <button id="stream-play" class="primary-button" type="button" data-focusable>▶　Reproduzir endereço</button>
+          <p class="format-note">A reprodução depende do formato, do acesso ao endereço e da compatibilidade do Tizen da TV.</p>
+        </div>
+
+        <div id="status" class="status" role="status">Conecte um pendrive com músicas e selecione Atualizar.</div>
+      </section>
+
+      <section class="player-panel panel" aria-label="Reprodutor">
+        <div class="player-topline"><span class="eyebrow">TOCANDO AGORA</span><span id="format-badge" class="format-badge">PAINHO LULA TV</span></div>
+        <div class="artwork-wrap"><div class="artwork-glow"></div><img class="artwork" src="icon.png" alt="Capa do Painho Lula" /></div>
+        <div class="track-info">
+          <p id="track-title" class="track-title">Sua música, na TV</p>
+          <p id="track-subtitle" class="track-subtitle">Escolha uma faixa na biblioteca</p>
+        </div>
+        <div class="timeline">
+          <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posição da música" data-focusable />
+          <div class="time-labels"><span id="current-time">0:00</span><span id="duration">0:00</span></div>
+        </div>
+        <div class="controls">
+          <button id="previous" class="transport secondary" type="button" data-focusable aria-label="Faixa anterior">|◀</button>
+          <button id="play-pause" class="transport play" type="button" data-focusable aria-label="Reproduzir">▶</button>
+          <button id="next" class="transport secondary" type="button" data-focusable aria-label="Próxima faixa">▶|</button>
+        </div>
+        <p class="remote-hint"><span>← → ↑ ↓</span> navegar <b>OK</b> selecionar <b>Voltar</b> pasta anterior</p>
+      </section>
+    </main>
+    <audio id="audio" preload="metadata"></audio>
+    <script src="app.js"></script>
+  </body>
+</html>

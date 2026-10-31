@@ -1,0 +1,237 @@
+/* Ten-foot layout: original components/theme, sized for a 1080p TV viewport. */
+html.tizen-tv {
+  --header-emphasized: 700 44px/52px var(--font-family);
+  --large-title: 400 36px/44px var(--font-family);
+  --large-title-emphasized: 700 36px/44px var(--font-family);
+  --title-1-emphasized: 700 34px/42px var(--font-family);
+  --title-2: 400 30px/38px var(--font-family);
+  --title-2-emphasized: 700 30px/38px var(--font-family);
+  --title-3: 400 25px/32px var(--font-family);
+  --title-3-emphasized: 600 25px/32px var(--font-family);
+  --body: 400 24px/32px var(--font-family);
+  --body-emphasized: 600 24px/32px var(--font-family);
+  --body-tall: 400 24px/34px var(--font-family);
+  --headline: 700 24px/32px var(--font-family);
+  --body-reduced: 400 25px/34px var(--font-family);
+  --callout: 400 21px/28px var(--font-family);
+  --callout-medium: 500 21px/28px var(--font-family);
+  --callout-emphasized: 600 21px/28px var(--font-family);
+  --subhead-emphasized: 600 20px/26px var(--font-family);
+  --caption-2: 500 18px/24px var(--font-family);
+  --footnote: 400 20px/26px var(--font-family);
+  --web-navigation-width: 285px;
+  --body-gutter: 48px;
+  --player-pill-height: 100px;
+  --player-bottom-offset: 30px;
+  --side-panel-width: 440px;
+}
+.tizen-tv [data-tv-sidebar] { padding: 20px 12px; }
+.tizen-tv [data-tv-sidebar] a { min-height: 54px; gap: 16px; }
+.tizen-tv [data-tv-sidebar] > div:first-child span { font-size: 28px; line-height: 36px; }
+.tizen-tv .tv-shelf { --n: 4 !important; --gap: 30px; column-gap: 30px; padding-top: 20px; padding-bottom: 20px; }
+.tizen-tv .tv-shelf-circle { --n: 5 !important; }
+.tizen-tv .tv-shelf-tracks { --n: 2 !important; --rows: 3 !important; --row-gap: 12px; }
+.tizen-tv .tv-shelf-horizontal { --n: 3 !important; --rows: 1 !important; }
+.tizen-tv .tv-shelf-editorial, .tizen-tv .tv-shelf-video { --n: 3 !important; }
+.tizen-tv .tv-track-card { min-height: 88px; height: auto; padding-block: 12px; }
+.tizen-tv .tv-search-top { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
+.tizen-tv .tv-search-top [data-tv-primary] { min-height: 150px; padding: 20px; }
+.tizen-tv [data-tv-search-field] { width: min(820px,100%); }
+.tizen-tv [data-tv-search-field] input { height: 62px; padding-left: 44px; padding-right: 52px; font-size: 25px; }
+.tizen-tv [data-tv-search-field] [role="listbox"] { width: min(820px,100%); max-height: 62vh; }
+.tizen-tv [data-tv-search-field] [role="option"] { min-height: 76px; padding: 14px; }
+.tizen-tv [data-tv-search-field] button[aria-label="Clear"] { width: 32px; height: 32px; right: 12px; }
+.tizen-tv [data-tv-mini-player] { width: min(1180px,100%); grid-template-columns: 290px minmax(200px,1fr) auto; gap: 20px; padding-inline: 24px; }
+.tizen-tv [data-tv-mini-player] button { min-width: 42px; min-height: 48px; }
+.tizen-tv [role="menu"] { min-width: 310px; padding: 10px; }
+.tizen-tv [role^="menuitem"] { min-height: 52px; padding: 10px 16px; }
+.tizen-tv :is(button,a,input,[tabindex]):focus-visible { outline: 5px solid #d2b6ff; outline-offset: 5px; transition: none !important; }
+.tizen-tv .glass-material { backdrop-filter: none; background-color: var(--pageBG); }
+.tizen-tv [data-full-screen] { --art: min(34vw,calc(100dvh - 420px),560px) !important; animation: none !important; }
+.tizen-tv [data-tv-player-layout] { padding: 60px; column-gap: 90px; }
+.tizen-tv [data-full-screen] .tv-track-title { font-size: 32px; line-height: 40px; }
+.tizen-tv [data-tv-transport-row] { width: min(100%,520px); height: 96px; margin-top: 26px; gap: 18px; }
+.tizen-tv [data-tv-transport-row] button { width: 64px; height: 64px; flex-shrink: 0; }
+.tizen-tv [data-tv-transport-row] [data-tv-transport="play"] { width: 88px; height: 88px; }
+.tizen-tv [data-tv-transport-row] [data-tv-transport="previous"], .tizen-tv [data-tv-transport-row] [data-tv-transport="next"] { width: 76px; height: 76px; }
+.tizen-tv [data-full-screen] > button { min-width: 56px; min-height: 56px; }
+.tizen-tv [data-full-screen] > button svg { width: 28px; height: 28px; }
+.tizen-tv [data-tv-time-labels] { font-size: 20px; line-height: 28px; }
+.tizen-tv [data-tv-card] button[aria-haspopup] { min-width: 44px; min-height: 44px; }
+.tizen-tv [data-full-screen] [aria-label="Lyrics"] { --bitchord-lyric-size: 46px; }
+.tizen-tv .tv-player-help { margin: 16px 0 0; text-align: center; font-size: 19px; line-height: 28px; color: var(--systemSecondary); }
+.tizen-tv #scrollable-page { scroll-padding-top: 32px; scroll-padding-bottom: 150px; overflow-anchor: auto; }
+.tizen-tv [data-tv-card][data-tv-focused] { outline: 4px solid #d2b6ff; outline-offset: 4px; border-radius: 12px; }
+.tizen-tv [data-tv-card] [data-tv-primary]:focus-visible { outline: none; }
+.tizen-tv [data-tv-card][data-tv-focused] button[aria-haspopup] { opacity: 1; }
+@media (max-width: 1400px) {
+  html.tizen-tv { --web-navigation-width: 245px; --body-gutter: 32px; }
+  .tizen-tv .tv-shelf { --n: 3 !important; }
+  .tizen-tv .tv-shelf-circle { --n: 4 !important; }
+  .tizen-tv .tv-shelf-tracks { --n: 2 !important; }
+  .tizen-tv [data-tv-mini-player] { grid-template-columns: 260px minmax(180px,1fr) auto; gap: 12px; }
+  .tizen-tv [data-tv-player-layout] { padding: 44px; column-gap: 48px; }
+}
+
+/* Explicit TV appearance, independent of firmware light preference. */
+:root.tizen-tv {
+    color-scheme: dark;
+
+    --pageBG: #1f1f1f;
+    --pageBG-rgb: 31, 31, 31;
+
+    --systemPrimary: #ffffffeb;
+    --systemSecondary: #ffffffa3;
+    --systemTertiary: #ffffff66;
+    --systemQuaternary: #ffffff1a;
+    --systemQuinary: #ffffff0d;
+
+    --keyColor: #fa586a;
+    --keyColor-rgb: 250, 88, 106;
+    --keyColor-rollover: #ff5f7a;
+    --keyColor-pressed: #ff4661;
+    --keyColorBG: #fa233b;
+    --selectionColor: #c11b2e;
+
+    --systemRed: #ff453a;
+    --systemGreen: #32d74b;
+    --systemBlue: #0a84ff;
+    --systemGray: #98989d;
+    --systemGray2: #636366;
+    --systemGray3: #48484a;
+    --systemGray4: #3a3a3c;
+    --systemGray5: #2c2c2e;
+    --systemGray6: #1c1c1e;
+
+    --labelDivider: #ffffff1a;
+    --vibrantDivider: #ebebf530;
+
+    --glassMaterialBackground: #26262899;
+    --glassMaterialShadowColor: #00000033;
+    --glassMaterialInnerStroke: #ffffff;
+    --glassMaterialInnerStrokeAlpha: 0.25;
+
+    --systemStandardThinMaterialSover: #28282880;
+    --systemStandardThickMaterialSover: #282828b3;
+    --systemHeaderMaterialSover: #1e1e1ecc;
+
+    --navSidebarSelectedState: #ffffff0d;
+    --tracklistHoverColor: #ffffff0f;
+    --shelfBG: #ffffff0d;
+    --opaqueShelfBG: #2b2b2b;
+    --footerBg: #323232;
+    --genericJoeColor: #323232;
+    --searchBarBorderColor: #ffffff26;
+    --segmentedControlBG: #7676803d;
+    --segmentedControlSelectedBG: #636366;
+    --button-pill-color: #000000;
+    --button-pill-background-color: #ffffff;
+    --radiosityShadowColor: #0000004d;
+    --dialogShadowColor: #0000008c;
+
+    --containerInnerStroke: #ffffff;
+    --containerInnerStrokeAlpha: 0.25;
+
+    --skeleton-fill: #ffffff12;
+    --skeleton-shimmer: #ffffff14;
+}
+
+/* Outline the entire selected settings row, including switches at its edge. */
+.tizen-tv [data-tv-settings] label:focus-within,
+.tizen-tv [data-tv-settings] a:focus-visible {
+  outline: 3px solid #d2b6ff;
+  outline-offset: -3px;
+  background-color: #ffffff0d;
+  border-radius: 10px;
+}
+.tizen-tv [data-tv-settings] { padding-bottom: 80px; }
+
+/* Responsive TV safe area; Home's rows never create additional columns. */
+html.tizen-tv {
+  --web-navigation-width: clamp(13rem, 14.85vw, 18rem);
+  --body-gutter: clamp(1.5rem, 2.5vw, 3rem);
+  --player-pill-height: clamp(5rem, 9.26vh, 6.25rem);
+  --player-bottom-offset: 2.78vh;
+}
+.tizen-tv #scrollable-page:has([data-tv-home]) {
+  bottom: calc(var(--player-pill-height) + var(--player-bottom-offset) + 1rem);
+  scroll-padding-bottom: 1rem;
+}
+.tizen-tv [data-tv-home] { min-width: 0; max-width: 100%; padding-block-end: 1rem; }
+.tizen-tv [data-tv-home] .tv-shelf-tracks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: 0;
+  gap: 0.75rem clamp(1rem, 1.6vw, 2rem);
+  width: auto;
+  margin-inline: var(--body-gutter);
+  padding: 0.75rem 0;
+  overflow: visible;
+}
+.tizen-tv [data-tv-home] .tv-shelf-tracks > li { min-width: 0; width: 100%; }
+.tizen-tv [data-tv-home] .tv-track-card {
+  box-sizing: border-box;
+  width: 100%; min-width: 0;
+  grid-template-columns: clamp(2.5rem, 3vw, 3.6rem) minmax(0, 1fr) 2.75rem;
+  gap: 0.6rem;
+  min-height: 5.5rem;
+  padding: 0.75rem 0.5rem;
+}
+.tizen-tv [data-tv-home] .tv-track-card > [data-tv-primary] { width: 100%; }
+.tizen-tv [data-tv-home] .tv-track-card > div { min-width: 0; overflow: hidden; }
+.tizen-tv [data-tv-home] .tv-track-card .truncate { min-width: 0; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tizen-tv [data-tv-home] .tv-track-card .type-body > button { flex: 1; }
+.tizen-tv [data-tv-home] .tv-shelf { box-sizing: border-box; max-width: 100%; }
+.tizen-tv [data-tv-home] .tv-shelf > li { min-width: 0; }
+.tizen-tv [data-tv-home] h2 { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tizen-tv .tv-history-empty { margin: 1.5rem var(--body-gutter); font-size: 1.4rem; line-height: 1.5; color: var(--systemSecondary); }
+.tizen-tv [data-tv-home] {
+  --body: 400 clamp(1.1rem, 1.25vw, 1.5rem)/1.35 var(--font-family);
+  --callout: 400 clamp(1rem, 1.1vw, 1.3125rem)/1.35 var(--font-family);
+  --title-2-emphasized: 700 clamp(1.5rem, 1.56vw, 1.875rem)/1.3 var(--font-family);
+  --large-title: 400 clamp(1.75rem, 1.875vw, 2.25rem)/1.25 var(--font-family);
+  --header-emphasized: 700 clamp(2rem, 2.3vw, 2.75rem)/1.2 var(--font-family);
+}
+.tizen-tv #scrollable-page:has([data-tv-home]) > .min-h-full { padding-bottom: 1rem; }
+
+/* Compact, fixed sidebar rhythm and distinct current-page/focus states. */
+html.tizen-tv { --web-navigation-width: clamp(12rem, 12.8vw, 15.5rem); }
+.tizen-tv [data-tv-sidebar] { padding: 1rem 0.75rem; }
+.tizen-tv [data-tv-sidebar-brand] { margin: 0; height: 4.5rem; padding: 0 0.75rem; }
+.tizen-tv [data-tv-sidebar-brand] span { font-size: 1.5rem !important; white-space: nowrap; }
+.tizen-tv [data-tv-sidebar-items], .tizen-tv [data-tv-sidebar-footer] { padding-inline: 0.5rem; }
+.tizen-tv [data-tv-sidebar-footer] { padding-bottom: 1rem; }
+.tizen-tv [data-tv-sidebar] li { margin: 0; }
+.tizen-tv [data-tv-sidebar] a:not([aria-label="Painho Lula, início"]) {
+  box-sizing: border-box; min-height: 3.5rem; height: 3.5rem;
+  display: flex; align-items: center; gap: 0.75rem; margin-block: 0.25rem; padding: 0.5rem 0.75rem;
+  border: 0.15rem solid transparent; font-size: 1.35rem; border-radius: 0.6rem;
+}
+.tizen-tv [data-tv-sidebar] a > svg, .tizen-tv [data-tv-sidebar] a > span:first-child:not(:last-child) { flex-shrink: 0; }
+.tizen-tv [data-tv-sidebar] a[aria-current="page"] { background: #ffffff20; color: white; border-left-color: #d2b6ff; }
+.tizen-tv [data-tv-sidebar] a:focus-visible { background: #72558b; outline: 0.2rem solid #e5cdff; outline-offset: 0; }
+.tizen-tv [data-tv-mini-player] { width: min(78vw, 100%); grid-template-columns: minmax(16rem, 18rem) minmax(10rem, 1fr) auto; gap: 0.75rem; padding-inline: 1rem; }
+.tizen-tv [data-tv-mini-player] button { min-width: 3rem; min-height: 3rem; }
+.tizen-tv [data-tv-mini-player] .group\/actions { gap: 0.5rem; }
+.tizen-tv [data-tv-mini-player] .group\/actions svg { width: 1.9rem; height: 1.9rem; }
+.tizen-tv [data-tv-mini-player] :is(button,[role="slider"]):focus-visible { background-color: #72558b; outline: 0.25rem solid #e5cdff; outline-offset: 0.15rem; border-radius: 0.5rem; }
+.tizen-tv [data-tv-mini-player] [role="slider"] { height: 1.5rem; }
+.tizen-tv [data-tv-mini-player] [role="slider"]:focus-visible::after { content: 'OK: ajustar posição · ↑: voltar'; position: absolute; bottom: 100%; left: 0; padding: 0.5rem; white-space: nowrap; background: #262628; color: white; border-radius: 0.5rem; font-size: 1rem; }
+.tizen-tv [data-tv-mini-player] [role="slider"][data-tv-seek-editing]:focus-visible::after { content: '← →: 5 segundos · OK: concluir'; }
+.tizen-tv [data-tv-sidebar-footer] a > .truncate { font-size: 1.15rem; }
+.tizen-tv [data-tv-mini-player] .group\/lcd { grid-template-columns: minmax(3rem, max-content) minmax(0, 1fr); }
+/* Recents is a single predictable list, rendered in small batches. */
+.tizen-tv .tv-recents-list { margin: 1.5rem var(--body-gutter); display: grid; gap: 0.75rem; padding: 0; }
+.tizen-tv .tv-recents-list > li { min-width: 0; list-style: none; }
+.tizen-tv .tv-recents-list .tv-track-card { min-height: 6rem; height: auto; grid-template-columns: 3.5rem minmax(0,1fr) 3rem; padding: 0.75rem; gap: 1rem; border-radius: 0.75rem; }
+.tizen-tv .tv-recents-list [data-tv-primary] { width: 100%; }
+.tizen-tv .tv-recents-list [data-tv-focused] { background: #ffffff16; }
+.tizen-tv .tv-recents-more { margin: 1rem var(--body-gutter) 2rem; padding: 1rem 1.5rem; border-radius: 0.5rem; background: #ffffff16; }
+.tizen-tv [data-tv-search-header] { position: relative; }
+.tizen-tv [data-tv-search-field] [role="listbox"] { position: relative; top: auto; margin-top: 0.75rem; max-height: 30vh; }
+.tizen-tv [data-tv-search-field] input[readonly] { cursor: pointer; }
+.tizen-tv #scrollable-page:has([data-tv-search-page]), .tizen-tv #scrollable-page:has([data-tv-recents]) { bottom: calc(var(--player-pill-height) + var(--player-bottom-offset) + 1rem); }
+.tizen-tv #scrollable-page:is(:has([data-tv-search-page]),:has([data-tv-recents])) > .min-h-full { padding-bottom: 1rem; }
+.tizen-tv[data-tv-keyboard-editing] #scrollable-page:has([data-tv-search-page]) { bottom: max(calc(var(--player-pill-height) + var(--player-bottom-offset) + 1rem), var(--tv-keyboard-inset,45vh)); }
