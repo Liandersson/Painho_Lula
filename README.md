@@ -2,6 +2,16 @@
 
 Web app de música para **Samsung Smart TV com Tizen 9.0 ou superior**, adaptado do [BitChord](https://github.com/kushagrasinghx/BitChord).
 
+## Instalar com Codex ou Claude Code
+
+Abra uma sessão com acesso ao terminal do seu computador Linux e envie:
+
+> Instale este app na minha Samsung Tizen TV: https://github.com/Liandersson/Painho_Lula — siga as instruções de instalação assistida do repositório, comece pelas verificações e me peça apenas o que faltar.
+
+O repositório contém `AGENTS.md`, `CLAUDE.md` e um [roteiro para o assistente](docs/INSTALACAO-ASSISTIDA.md). Se ele não ler o projeto automaticamente, peça para abrir esse roteiro. Assim ele pode conferir o computador, baixar a release, verificar o pacote e conduzir a instalação.
+
+Só colar o link não garante iniciar uma instalação: o pedido acima deixa sua intenção clara. Você ainda fará as etapas no controle, o login Samsung e a criação do certificado. **Não envie senhas pelo chat.**
+
 ## Instalação na Samsung TV
 
 **Comece pelo [tutorial completo de instalação](docs/INSTALAR-NA-TV.md).** Ele explica cada etapa, o que conferir e como resolver os erros mais comuns.

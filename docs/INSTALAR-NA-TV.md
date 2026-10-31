@@ -158,28 +158,11 @@ Uma mensagem de instalação concluída confirma a instalação, não garante qu
 
 **Pode ser mais fácil fazer a instalação com Codex ou Claude Code**, especialmente para abrir a pasta certa, verificar ferramentas e interpretar erros. Use uma sessão com acesso local à pasta extraída e ao terminal do seu computador. Um chat sem acesso ao computador só consegue orientar.
 
-Copie este pedido, sem incluir senhas:
+Para começar sem preencher todos os dados antes, envie:
 
-```text
-Quero instalar o Painho Lula numa Samsung TV Tizen 9.0+ usando Linux.
-Leia primeiro o tutorial atualizado em:
-https://github.com/Liandersson/Painho_Lula/blob/main/docs/INSTALAR-NA-TV.md
+> Instale este app na minha Samsung Tizen TV: https://github.com/Liandersson/Painho_Lula — leia AGENTS.md e docs/INSTALACAO-ASSISTIDA.md, confira meu computador e me peça apenas o que faltar.
 
-A pasta extraída do Instalacao.zip é: [COLOQUE O CAMINHO].
-O IP da TV é: [COLOQUE O IP].
-O caminho do SDK é: [COLOQUE O CAMINHO OU ~/tizen-studio].
-Meu perfil Samsung TV é: [COLOQUE O NOME, SEM SENHA].
-
-Confira Python, arquivos do pacote, SDK e conexão SDB da TV indicada.
-Ajude-me nas etapas que faltarem. Usarei o controle para ativar Developer
-Mode e farei pessoalmente login Samsung e criação do certificado com DUID.
-Depois execute o instalar-tv.sh publicado, usando somente a TV indicada.
-Não leia nem exiba chaves, senhas ou conteúdo dos certificados. Não use
-sudo para o instalador do app, não desinstale a versão anterior nem altere
-o código ou as verificações de segurança para contornar erros.
-Se algo falhar, pare nessa etapa e explique a mensagem real antes de tentar
-outra ação. Ao concluir, confirme o resultado do comando e peça os testes na TV.
-```
+O assistente deve detectar ferramentas disponíveis, obter o ZIP de instalação da última release, conferir o checksum e perguntar o IP da TV, o perfil e as ações humanas pendentes. Se o projeto não for lido automaticamente pelo seu ambiente, forneça o [link direto do roteiro](https://github.com/Liandersson/Painho_Lula/blob/main/docs/INSTALACAO-ASSISTIDA.md).
 
 O assistente não substitui a conta Samsung, o certificado ou as ações no controle. Se não tiver acesso ao terminal, execute os comandos orientados manualmente. Não há garantia de instalação sem erros por usar uma IA.
 
