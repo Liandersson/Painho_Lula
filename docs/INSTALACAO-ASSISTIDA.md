@@ -8,15 +8,25 @@ O objetivo é instalar e abrir o app na TV indicada, com o certificado do própr
 
 Se não houver acesso ao computador/terminal local, explique essa limitação e oriente abrir o projeto numa sessão local do Codex ou Claude Code. Não descreva comandos como executados sem tê-los executado.
 
-## 1. Inspecionar antes de perguntar
+## 1. Começar com duas perguntas simples
 
-Identifique sistema operacional, versão do Python, pasta de trabalho, SDK Tizen disponível e conexão de rede. Procure primeiro `~/tizen-studio/tools/sdb` e `~/tizen-studio/tools/ide/bin/tizen`; caminhos alternativos podem ser informados pelo usuário. Confira os arquivos e as opções do instalador pelo código ou `--help`.
+Se esses dados ainda não estiverem na conversa, abra com exatamente:
+
+> Qual é o IP da sua TV? O modo Developer Mode (modo desenvolvedor) já está ativado nela?
+
+Aceite respostas em linguagem comum. Reaproveite o que o usuário já informou; não pergunte de novo. Se não souber o IP, indique onde vê-lo nas configurações de rede. Se não souber ativar o modo, guie uma tela de cada vez pelo tutorial. Explique que TV e computador precisam estar na mesma rede.
+
+Não acrescente ao formulário inicial perguntas sobre SDK, Python, perfil, DUID, firmware ou pastas. Não prometa que só essas respostas bastarão num computador novo: login Samsung, emissão de certificado, contratos e permissões podem exigir participação depois, somente quando necessários.
+
+## 2. Detectar o restante automaticamente
+
+Identifique sistema operacional, versão do Python, pasta de trabalho, SDK Tizen disponível e conexão de rede. Procure primeiro `~/tizen-studio/tools/sdb` e `~/tizen-studio/tools/ide/bin/tizen`; se não estiver nesses caminhos, procure as ferramentas nos locais de instalação usuais e no PATH, sem varrer arquivos pessoais. Só peça ajuda com uma localização se a detecção falhar. Confira os arquivos e as opções do instalador pelo código ou `--help`.
 
 O assistente atual suporta Linux com Python 3.10+. Em outro sistema, informe a limitação e ofereça o caminho Linux descrito no guia, sem fingir suporte. Não é necessário Android Studio, APK, pacote DEB, servidor no notebook ou compilação Android.
 
-Ao concluir, tenha um resumo real dos requisitos encontrados e dos que faltam. Não vasculhe diretórios de credenciais nem leia certificados, senhas, cookies ou arquivos de perfis privados. O usuário informa apenas o nome do perfil, não a senha.
+Ao concluir, tenha um resumo real dos requisitos encontrados e dos que faltam. Use a ferramenta oficial para listar apenas os nomes dos perfis e o perfil ativo (confira as opções em `tizen security-profiles --help`). Esses metadados permitem selecionar um perfil sem ler arquivos privados. Não leia certificados, senhas, cookies nem conteúdo de arquivos de perfis. Prefira o perfil Samsung TV ativo já utilizado com este app; a ferramenta de assinatura deve validar a autorização real. Havendo vários perfis ambíguos, apresente uma escolha curta só nesse momento. Não substitua o certificado de autor para uma atualização.
 
-## 2. Obter o pacote pronto
+## 3. Obter o pacote pronto
 
 Consulte a última release publicada por API ou página do GitHub, em vez de presumir um número fixo. Baixe o asset terminado em `-Instalacao.zip` e `SHA256SUMS.txt` da mesma release, em uma pasta nova sem sobrescrever trabalho existente. Confira o SHA-256 desse ZIP contra a entrada correspondente do arquivo de checksums antes de extrair. Se divergir, interrompa e informe o erro. O checksum verifica consistência com a release, não é uma assinatura independente.
 
@@ -24,31 +34,29 @@ Inspecione os nomes do ZIP antes de extrair: rejeite caminhos absolutos, entrada
 
 Critério: pacote da release conferido e os quatro arquivos presentes.
 
-## 3. Pedir somente o que falta
+## 4. Usar o IP e conferir a conexão
 
-Faça perguntas curtas e agrupadas quando forem independentes:
+O usuário já informou o IP e o estado do Developer Mode na abertura. Identifique o IP local do computador pela rota até a TV e mostre-o quando precisar cadastrá-lo no painel da TV. Se houver ambiguidade de rede, ajude a resolvê-la em linguagem simples. Use somente a TV indicada, sem varrer a rede nem selecionar outro aparelho.
 
-- Qual é o IPv4 da TV e ela usa Tizen 9.0+? O ano/modelo sozinho não confirma isso.
-- Developer Mode está ativado com o IP deste computador e a TV foi reiniciada?
-- Já existe um perfil Samsung TV com o DUID desta TV? Qual o nome?
+Conecte pelo SDB quando disponível. Consulte informações de plataforma expostas pelas ferramentas oficiais, quando acessíveis, para conferir Tizen 9.0+. Não presuma compatibilidade pelo modelo. Só peça a tela Sobre esta TV se não conseguir verificar automaticamente; explique onde abrir e o que observar.
 
-O IP local do computador pode ser identificado pela conexão de rede; se houver várias interfaces/VPN, confirme qual rede alcança a TV. Não escolha outra TV automaticamente, nem teste uma faixa inteira de IPs. Use somente o alvo indicado. Nunca peça senha da conta Samsung ou do certificado pelo chat.
+Se a conexão falhar, confira primeiro o alvo, rede e mensagem retornada. Oriente conferir o IP deste computador no Developer Mode e reiniciar a TV, sem repetir um questionário técnico inteiro.
 
-## 4. Preparar ferramentas e certificado
+## 5. Resolver apenas os requisitos ausentes
 
 Se o SDK faltar, ajude a baixar o instalador oficial Samsung/Tizen compatível e preparar as dependências indicadas na documentação oficial. Instale ferramentas apenas dentro da autorização e permissões disponíveis; deixe a aceitação de contratos para o usuário. Use a conta normal do usuário para Studio e app.
 
-Guie a instalação de TV Tools/TV Extensions e Samsung Certificate Extension. Para etapas gráficas, diga exatamente qual tela abrir e espere a confirmação necessária. Oriente Developer Mode pelo controle, login Samsung e Certificate Manager com Samsung → TV, certificado de autor, distribuidor e DUID. Preserve um certificado de autor existente para atualizações. O perfil deve estar ativo.
+Guie a instalação de TV Tools/TV Extensions e Samsung Certificate Extension. Para etapas gráficas, diga exatamente qual tela abrir e espere a confirmação necessária. Se faltar certificado, diga “Precisamos autorizar seu computador a instalar na TV; vou te guiar” e abra/oriente o Certificate Manager. Ajude com Samsung → TV e use a TV conectada para obter/preencher o DUID pelas ferramentas oficiais; não peça que um iniciante descubra esse identificador sozinho. O usuário faz o login Samsung e escolhe a senha diretamente na ferramenta. Preserve um certificado de autor existente para atualizações. O perfil deve estar ativo.
 
 Essas ações humanas não podem ser inferidas como concluídas porque o usuário ficou em silêncio. Continue as verificações independentes enquanto espera. Não crie contas, aceite contratos ou escolha senhas por ele.
 
-Critério: ferramentas presentes, usuário confirmou as etapas necessárias e informou um perfil Samsung TV preparado para o alvo.
+Critério: ferramentas presentes e perfil Samsung TV identificado pelas ferramentas oficiais ou criado com o usuário para o alvo. Registre o nome detectado para passar ao instalador sem perguntar novamente.
 
-## 5. Conectar e instalar
+## 6. Instalar sem novo questionário
 
 Use os comandos documentados, com argumentos separados e sem shell interpolation de dados do usuário. Conecte `sdb` ao IPv4 indicado, porta 26101, e confira em `sdb devices` que esse alvo exato aparece como `device`. Se estiver ausente/offline, resolva a conexão antes de assinar.
 
-Execute o `instalar-tv.sh` da pasta extraída, informando `--tv`, `--profile` e `--sdk` quando necessário. Pode usar `--dry-run` para conferir o plano, mas isso não testa rede nem certificado. Para uma saída já existente, use outra pasta `--output`, preservando o pacote anterior.
+Execute o `instalar-tv.sh` da pasta extraída com `--tv`, `--profile` e `--sdk` preenchidos pelos dados já coletados/detectados. O script manual ainda pode pedir perfil quando executado sem argumentos; na sessão assistida, passe os argumentos para evitar essa pergunta ao usuário. Pode usar `--dry-run` para conferir o plano, mas isso não testa rede nem certificado. Para uma saída já existente, use outra pasta `--output`, preservando o pacote anterior.
 
 O SDK recebe senhas diretamente no seu próprio prompt. Se o terminal do agente não permitir entrada privada pelo usuário, peça que ele execute o comando de assinatura/instalação no terminal local; nunca encaminhe a senha pelo chat, argumentos, variáveis, logs ou arquivos temporários. Não leia o conteúdo dos certificados. Não desative validação, firewall inteiro ou exigências de certificado, não desinstale uma versão anterior e não use root para o assistente.
 
@@ -56,7 +64,7 @@ Se ocorrer erro, identifique a etapa e a mensagem real, consulte a seção de er
 
 Critério: processo concluído sem erro e mensagem final de instalação e abertura. Registre somente o caminho do WGT gerado, versão instalada e alvo, sem dados privados.
 
-## 6. Validar com o usuário
+## 7. Confirmar o resultado
 
 Peça confirmação na TV: app abriu, pesquisa encontra música, áudio toca, pausar/continuar e trocar faixa funcionam. O computador pode ser desligado após instalar; a TV ainda precisa de internet.
 
