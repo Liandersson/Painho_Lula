@@ -8,11 +8,13 @@ O objetivo é instalar e abrir o app na TV indicada, com o certificado do própr
 
 Se não houver acesso ao computador/terminal local, explique essa limitação e oriente abrir o projeto numa sessão local do Codex ou Claude Code. Não descreva comandos como executados sem tê-los executado.
 
-## 1. Começar com duas perguntas simples
+## 1. Começar com três informações simples
 
 Se esses dados ainda não estiverem na conversa, abra com exatamente:
 
-> Qual é o IP da sua TV? O modo Developer Mode (modo desenvolvedor) já está ativado nela?
+> Qual é o IP da sua TV? Qual é o IP local do seu computador ou notebook? O Developer Mode (modo desenvolvedor) já está ativado na TV?
+
+O IP da TV é usado para conectar e instalar. O IP local do computador/notebook deve ser cadastrado no campo Host PC do Developer Mode da TV. Se a pessoa não souber o IP do computador, identifique-o pela rota até a TV e mostre o endereço encontrado para ela conferir, sem exigir que procure sozinha. Use o endereço da rede local, não o IP público da internet.
 
 Aceite respostas em linguagem comum. Reaproveite o que o usuário já informou; não pergunte de novo. Se não souber o IP, indique onde vê-lo nas configurações de rede. Se não souber ativar o modo, guie uma tela de cada vez pelo tutorial. Explique que TV e computador precisam estar na mesma rede.
 
@@ -36,7 +38,7 @@ Critério: pacote da release conferido e os quatro arquivos presentes.
 
 ## 4. Usar o IP e conferir a conexão
 
-O usuário já informou o IP e o estado do Developer Mode na abertura. Identifique o IP local do computador pela rota até a TV e mostre-o quando precisar cadastrá-lo no painel da TV. Se houver ambiguidade de rede, ajude a resolvê-la em linguagem simples. Use somente a TV indicada, sem varrer a rede nem selecionar outro aparelho.
+O usuário já informou os dois IPs e o estado do Developer Mode na abertura, ou o IP do computador foi detectado com sua ajuda. Confira se o IP local do computador corresponde à rota até a TV e mostre qual endereço deve ser cadastrado no painel da TV. Se houver ambiguidade de rede, ajude a resolvê-la em linguagem simples. Use somente a TV indicada, sem varrer a rede nem selecionar outro aparelho.
 
 Conecte pelo SDB quando disponível. Consulte informações de plataforma expostas pelas ferramentas oficiais, quando acessíveis, para conferir Tizen 9.0+. Não presuma compatibilidade pelo modelo. Só peça a tela Sobre esta TV se não conseguir verificar automaticamente; explique onde abrir e o que observar.
 

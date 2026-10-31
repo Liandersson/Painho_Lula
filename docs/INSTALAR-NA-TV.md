@@ -162,7 +162,7 @@ Para começar sem preencher todos os dados antes, envie:
 
 > Instale este app na minha Samsung Tizen TV: https://github.com/Liandersson/Painho_Lula — leia AGENTS.md e docs/INSTALACAO-ASSISTIDA.md, confira meu computador e me peça apenas o que faltar.
 
-O assistente começa pedindo apenas **o IP da TV** e **se o Developer Mode está ativo**. Ele detecta as ferramentas e os perfis disponíveis, obtém o ZIP da última release e confere o checksum. Só interrompe para uma ação humana quando ela for necessária, como login Samsung ou criação do certificado. Não é preciso saber nome de perfil, DUID ou caminho do SDK para começar. Se o projeto não for lido automaticamente pelo seu ambiente, forneça o [link direto do roteiro](https://github.com/Liandersson/Painho_Lula/blob/main/docs/INSTALACAO-ASSISTIDA.md).
+O assistente começa pedindo apenas **o IP da TV**, **o IP local do computador/notebook** e **se o Developer Mode está ativo**. Ele detecta as ferramentas e os perfis disponíveis, obtém o ZIP da última release e confere o checksum. Só interrompe para uma ação humana quando ela for necessária, como login Samsung ou criação do certificado. Não é preciso saber nome de perfil, DUID ou caminho do SDK para começar. Se o projeto não for lido automaticamente pelo seu ambiente, forneça o [link direto do roteiro](https://github.com/Liandersson/Painho_Lula/blob/main/docs/INSTALACAO-ASSISTIDA.md).
 
 O assistente não substitui a conta Samsung, o certificado ou as ações no controle. Se não tiver acesso ao terminal, execute os comandos orientados manualmente. Não há garantia de instalação sem erros por usar uma IA.
 
