@@ -1,0 +1,55 @@
+name: Publicar TV
+on:
+  push:
+    branches: [main]
+    paths: [release/manifest.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: publicar-tv
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Restaurar fonte completa na publicação inicial
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f .publication/manifest.json ]; then
+            python3 tools/hydrate_source.py
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Publicar fonte completa preservada do Painho Lula TV"
+            git push origin HEAD:main
+          fi
+          echo "SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Instalar pnpm
+        run: npm install --global pnpm@11.25.0
+      - name: Testar assistente
+        run: python3 -m unittest discover -s tests -v
+      - name: Compilar web app
+        run: bash web/tizen-tv/build-web-app.sh
+      - name: Testar regressões da TV
+        working-directory: web/app
+        run: pnpm exec vitest run src/pages/RecentsPage.test.tsx src/shell/VolumeControl.tizen.test.tsx src/pages/HomePage.tizen.test.tsx src/components/music/play.tizen.test.ts src/shell/useScrubber.test.tsx src/playback/queue/continuation.test.ts src/playback/queue/queue.test.ts src/platform/tizen/spatialNavigation.test.ts src/components/music/SearchField.tizen.test.tsx src/platform/tizen/recentlyPlayed.test.ts src/platform/tizen/useRecentTracking.test.ts
+      - name: Gerar arquivos sem assinatura
+        run: python3 tools/build_public_release.py
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="$(python3 -c 'import json; print(json.load(open("release/manifest.json"))["tag"])')"
+          version="$(python3 -c 'import json; print(json.load(open("release/manifest.json"))["version"])')"
+          gh release create "$tag" release-output/* --target "$SOURCE_SHA" --title "Painho Lula TV $version" --notes-file release/NOTAS.md
