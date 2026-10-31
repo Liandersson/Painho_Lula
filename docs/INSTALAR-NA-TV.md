@@ -1,4 +1,4 @@
-# Instalar Painho Lula TV na Samsung Tizen
+# Instalar LqMusic na Samsung Tizen
 
 [Consulte a versão atualizada deste tutorial no GitHub](https://github.com/Liandersson/Painho_Lula/blob/main/docs/INSTALAR-NA-TV.md).
 
@@ -160,7 +160,7 @@ Ao terminar, o assistente deve mostrar **“Instalado e iniciado”**. O `.wgt` 
 
 ## 8. Conferir na TV
 
-- O app abriu? Caso não, procure **Painho Lula** em Apps.
+- O app abriu? Caso não, procure **LqMusic** em Apps.
 - Teste Home, Search e Recents com as setas e OK.
 - Pesquise uma música, inicie e deixe tocar; teste pausar/continuar e trocar faixa.
 - Confira CH+/CH− e o acesso ao player. O volume geral é controlado pelo controle da TV; no player há mute/desmute.

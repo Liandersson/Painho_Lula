@@ -27,7 +27,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -A
-            git commit -m "Publicar fonte completa preservada do Painho Lula TV"
+            git commit -m "Publicar fonte completa preservada do LqMusic"
             git push origin HEAD:main
           fi
           echo "SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
@@ -52,4 +52,4 @@ jobs:
         run: |
           tag="$(python3 -c 'import json; print(json.load(open("release/manifest.json"))["tag"])')"
           version="$(python3 -c 'import json; print(json.load(open("release/manifest.json"))["version"])')"
-          gh release create "$tag" release-output/* --target "$SOURCE_SHA" --title "Painho Lula TV $version" --notes-file release/NOTAS.md
+          gh release create "$tag" release-output/* --target "$SOURCE_SHA" --title "LqMusic $version" --notes-file release/NOTAS.md

@@ -1,4 +1,4 @@
-# Contribuir com Painho Lula TV
+# Contribuir com LqMusic
 
 Este repositório distribui o web app para Samsung Tizen TV. Abra issues e pull requests neste repositório, descrevendo o problema, modelo da TV, versão Tizen e como reproduzir.
 

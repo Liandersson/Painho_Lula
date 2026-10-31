@@ -73,7 +73,7 @@ private fun desktopMain() = application {
     Window(
         onCloseRequest = { if (DesktopWindowVisibility.onCloseRequest()) exitApplication() },
         visible = visible,
-        title = "Painho Lula",
+        title = "LqMusic",
         icon = painterResource(Res.drawable.logo),
         state = state,
         // No system title bar on Windows, where the application draws its own instead — see
@@ -112,7 +112,7 @@ private fun desktopMain() = application {
                 (openingSize.width.value * transform.scaleX).roundToInt(),
                 (openingSize.height.value * transform.scaleY).roundToInt(),
             )
-            if (DesktopPlatform.isWindows && DesktopWindowsFrame.install("Painho Lula")) {
+            if (DesktopPlatform.isWindows && DesktopWindowsFrame.install("LqMusic")) {
                 DesktopWindowBackdrop.apply()
             }
         }

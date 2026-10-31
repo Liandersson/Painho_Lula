@@ -12,7 +12,7 @@ export const stateStyles = {
 export function NeedsExtension({ what = 'YouTube Music' }: { what?: string }) {
   return (
     <div className={stateStyles.state}>
-      <p className={stateStyles.title}>Acesse {what} com a extensão Painho Lula</p>
+      <p className={stateStyles.title}>Acesse {what} com a extensão LqMusic</p>
       <p className={stateStyles.detail}>
         A extensão permite acessar o YouTube Music pelo seu navegador. Complementos e letras funcionam sem ela.
       </p>

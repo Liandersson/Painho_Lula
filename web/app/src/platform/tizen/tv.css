@@ -204,7 +204,7 @@ html.tizen-tv { --web-navigation-width: clamp(12rem, 12.8vw, 15.5rem); }
 .tizen-tv [data-tv-sidebar-items], .tizen-tv [data-tv-sidebar-footer] { padding-inline: 0.5rem; }
 .tizen-tv [data-tv-sidebar-footer] { padding-bottom: 1rem; }
 .tizen-tv [data-tv-sidebar] li { margin: 0; }
-.tizen-tv [data-tv-sidebar] a:not([aria-label="Painho Lula, início"]) {
+.tizen-tv [data-tv-sidebar] a:not([aria-label="LqMusic, início"]) {
   box-sizing: border-box; min-height: 3.5rem; height: 3.5rem;
   display: flex; align-items: center; gap: 0.75rem; margin-block: 0.25rem; padding: 0.5rem 0.75rem;
   border: 0.15rem solid transparent; font-size: 1.35rem; border-radius: 0.6rem;

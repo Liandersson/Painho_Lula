@@ -2,7 +2,7 @@
 
 ## Escopo e entrada
 
-Use este procedimento quando o usuário pedir a instalação do Painho Lula TV. O repositório oficial desta adaptação é `https://github.com/Liandersson/Painho_Lula`. Leia também `docs/INSTALAR-NA-TV.md`, referência para as telas Samsung e os erros conhecidos.
+Use este procedimento quando o usuário pedir a instalação do LqMusic. O repositório oficial desta adaptação é `https://github.com/Liandersson/Painho_Lula`. Leia também `docs/INSTALAR-NA-TV.md`, referência para as telas Samsung e os erros conhecidos.
 
 O objetivo é instalar e abrir o app na TV indicada, com o certificado do próprio usuário. Use o assistente publicado; não modifique o código para instalar. Execute as etapas disponíveis em vez de apenas devolver um tutorial. Respeite as permissões do ambiente, as escolhas do usuário e os contratos das ferramentas.
 

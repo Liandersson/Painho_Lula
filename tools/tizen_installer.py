@@ -32,7 +32,7 @@ def check_app(app: Path) -> str:
     content = root.find('{http://www.w3.org/ns/widgets}content')
     application = root.find('{http://tizen.org/ns/widgets}application')
     if application is None or application.get('id') != APP_ID:
-        raise ValueError('Este pacote não é o Painho Lula TV esperado.')
+        raise ValueError('Este pacote não é o LqMusic esperado.')
     if content is None or content.get('src') != 'full-app/index.html':
         raise ValueError('O pacote não aponta para o web app completo.')
     if not (app / 'full-app/index.html').is_file():
@@ -65,7 +65,7 @@ def execute(command: list[str], *, capture: bool = False):
 
 
 def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(description='Instalar Painho Lula numa Samsung Tizen usando seu certificado.')
+    result = argparse.ArgumentParser(description='Instalar LqMusic numa Samsung Tizen usando seu certificado.')
     result.add_argument('--tv', help='IPv4 da TV em Developer Mode')
     result.add_argument('--sdk', type=Path, default=Path.home() / 'tizen-studio')
     result.add_argument('--profile', help='Nome do perfil Samsung que já inclui o DUID desta TV')
@@ -88,7 +88,7 @@ def main(argv=None) -> int:
         version = check_app(app)
         sdk = args.sdk.expanduser().resolve()
         sdb, tizen = sdk / 'tools/sdb', sdk / 'tools/ide/bin/tizen'
-        print(f'\nPainho Lula TV {version} → {serial}; perfil: {profile}')
+        print(f'\nLqMusic {version} → {serial}; perfil: {profile}')
         print('A TV deve usar Tizen 9.0+, Developer Mode e estar registrada no certificado.')
         print('O SDK pedirá as senhas diretamente. Responda N se perguntar se deseja salvá-las.')
         if args.dry_run:
@@ -111,7 +111,7 @@ def main(argv=None) -> int:
                 raise ValueError('O SDK não gerou exatamente um WGT; consulte o erro de assinatura acima.')
             args.output.mkdir(parents=True, exist_ok=True)
             # Nome sem espaços evita falhas de instalação no CLI Samsung.
-            target = args.output / f'Painho-Lula-TV-{version}-{ipaddress.IPv4Address(tv)}.wgt'
+            target = args.output / f'LqMusic-TV-{version}-{ipaddress.IPv4Address(tv)}.wgt'
             if target.exists():
                 raise ValueError(f'Já existe {target}. Mova-o ou use outro diretório --output.')
             shutil.copy2(packages[0], target)

@@ -502,8 +502,8 @@ compose.desktop {
             )
             packageName = "painho-lula"
             packageVersion = nativePackageVersion
-            description = "Painho Lula — music player"
-            vendor = "Painho Lula community build"
+            description = "LqMusic — music player"
+            vendor = "LqMusic community build"
             copyright = "Copyright © 2026 BitChord contributors; GPL-3.0"
 
             modules(

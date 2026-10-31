@@ -57,7 +57,7 @@ class InstallerTests(unittest.TestCase):
                 if command[-1]=='devices':
                     return subprocess.CompletedProcess(command,0,stdout='List of devices attached\n192.168.0.10:26101 device Samsung\n192.168.0.20:26101 device Other\n')
                 if 'package' in command:
-                    target=Path(command[command.index('-o')+1]);(target/'Painho Lula TV.wgt').write_bytes(b'signed')
+                    target=Path(command[command.index('-o')+1]);(target/'LqMusic.wgt').write_bytes(b'signed')
                 return subprocess.CompletedProcess(command,0)
             with patch.object(installer.subprocess,'run',side_effect=run):
                 result=installer.main(['--app',str(root/'app'),'--sdk',str(sdk),'--tv','192.168.0.10','--profile','Minha TV','--output',str(root/'out')])
@@ -65,7 +65,7 @@ class InstallerTests(unittest.TestCase):
             installed=next(command for command in calls if 'install' in command)
             self.assertEqual(installed[installed.index('-s')+1],'192.168.0.10:26101')
             self.assertNotIn(' ',installed[installed.index('-n')+1])
-            self.assertEqual((root/'out/Painho-Lula-TV-1.3.0-192.168.0.10.wgt').read_bytes(),b'signed')
+            self.assertEqual((root/'out/LqMusic-TV-1.3.0-192.168.0.10.wgt').read_bytes(),b'signed')
             self.assertFalse(any('password' in part.lower() for command in calls for part in command))
 
     def test_missing_target_stops_before_packaging(self):

@@ -74,7 +74,7 @@ internal fun PainhoLulaLoginScreen(onLoginSuccess: () -> Unit) {
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_launcher_photo),
-                        contentDescription = "Painho Lula",
+                        contentDescription = "LqMusic",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(92.dp)
@@ -82,7 +82,7 @@ internal fun PainhoLulaLoginScreen(onLoginSuccess: () -> Unit) {
                     )
                     Spacer(Modifier.height(20.dp))
                     Text(
-                        text = "Painho Lula",
+                        text = "LqMusic",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,

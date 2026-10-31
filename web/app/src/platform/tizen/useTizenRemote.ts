@@ -78,7 +78,7 @@ export function useTizenRemote() {
         else if (ui.sidePanel) ui.closeSidePanel();
         else if (location.pathname !== '/home') {
           if ((window.history.state?.idx ?? 0) > 0) navigate(-1); else navigate('/home');
-        } else if (window.confirm('Sair do Painho Lula?')) tv?.application?.getCurrentApplication().exit();
+        } else if (window.confirm('Sair do LqMusic?')) tv?.application?.getCurrentApplication().exit();
       } else if (!editing && !target?.closest('[role="menu"]') && /^Arrow(Left|Right|Up|Down)$/.test(key)) {
         const option = target?.closest<HTMLElement>('[role="option"]');
         const list = option?.closest('[role="listbox"]');

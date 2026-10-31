@@ -14,6 +14,6 @@ if [[ -z "$desktop_file" ]]; then
 fi
 
 # Keep the generated filename unchanged: the package maintainer scripts refer to it.
-sed -i 's/^Name=.*/Name=Painho Lula/' "$desktop_file"
+sed -i 's/^Name=.*/Name=LqMusic/' "$desktop_file"
 dpkg-deb -Zgzip -z1 --build --root-owner-group "$work_dir/package" "$work_dir/fixed.deb" >/dev/null
 mv "$work_dir/fixed.deb" "$deb_file"

@@ -320,7 +320,7 @@
   $('full-app-frame').addEventListener('load', function () {
     try {
       var frameDoc = $('full-app-frame').contentDocument;
-      if (!frameDoc || frameDoc.title === 'Painho Lula — app indisponível') {
+      if (!frameDoc || frameDoc.title === 'LqMusic — app indisponível') {
         $('full-app-missing').hidden = false;
         return;
       }

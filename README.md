@@ -1,4 +1,6 @@
-# Painho Lula TV
+# LqMusic
+
+![Ícone LqMusic](web/app/public/favicon.png)
 
 Web app de música para **Samsung Smart TV com Tizen 9.0 ou superior**, adaptado do [BitChord](https://github.com/kushagrasinghx/BitChord).
 
@@ -57,3 +59,5 @@ Ao informar um erro, inclua modelo, versão Tizen, etapa e mensagem completa. N�
 A instalação distribuída aqui é **somente para Samsung Tizen TV**. Os módulos originais foram preservados como código-fonte para manter a base do projeto; não são opções de instalação desta release.
 
 [Compilar a versão Tizen](docs/COMPILAR.md) · [Licença GPL-3.0](LICENSE) · [Créditos e licenças de terceiros](NOTICE.md)
+
+[Sobre a mudança de identidade e continuidade das atualizações](docs/IDENTIDADE.md).

@@ -1,6 +1,6 @@
 # Créditos, licença e componentes
 
-Painho Lula deriva de BitChord, de kushagrasinghx e colaboradores:
+LqMusic deriva de BitChord, de kushagrasinghx e colaboradores:
 https://github.com/kushagrasinghx/BitChord
 
 As alterações de nome, integração Tizen, navegação e distribuição não transferem a autoria do código original. Consulte LICENSE (GPL-3.0) e os avisos mantidos em cada arquivo.

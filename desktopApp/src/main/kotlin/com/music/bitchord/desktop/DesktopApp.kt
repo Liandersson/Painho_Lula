@@ -506,7 +506,7 @@ fun BitChordDesktopApp() {
             title = { Text(DesktopStrings["d_update_available", "Update available"]) },
             text = {
                 Text(
-                    "Painho Lula ${update.version} is out — you have ${DesktopUpdateChecker.currentVersion}." +
+                    "LqMusic ${update.version} is out — you have ${DesktopUpdateChecker.currentVersion}." +
                         (update.notes?.takeIf { it.isNotBlank() }?.let { "\n\n${it.take(600)}" } ?: ""),
                 )
             },
@@ -4008,7 +4008,7 @@ private fun DesktopTopBar(
                 // The mark leads the player's own controls, now that the sidebar runs to the top.
                 Image(
                     painter = painterResource(Res.drawable.logo_mark),
-                    contentDescription = "Painho Lula",
+                    contentDescription = "LqMusic",
                     modifier = Modifier.size(width = 28.dp, height = 18.dp),
                 )
                 Spacer(Modifier.width(14.dp))
@@ -6024,7 +6024,7 @@ private fun DesktopSettingsFooter(onLicenses: () -> Unit) {
     )
     Text(
         text = buildAnnotatedString {
-            append("Painho Lula $version  ")
+            append("LqMusic $version  ")
             withLink(LinkAnnotation.Url("https://github.com/Liandersson/Painho_Lula", linkStyles)) {
                 append("GitHub")
             }

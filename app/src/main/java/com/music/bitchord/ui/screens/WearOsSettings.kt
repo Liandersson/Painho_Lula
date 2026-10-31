@@ -76,8 +76,8 @@ internal fun WearOsSettingsRow(onClick: () -> Unit) {
 }
 
 /**
- * Settings → Painho Lula for Wear OS, a page of its own: every watch paired with
- * this phone, whether it has this build of Painho Lula, and the one action that
+ * Settings → LqMusic for Wear OS, a page of its own: every watch paired with
+ * this phone, whether it has this build of LqMusic, and the one action that
  * makes it so. Install switches the page to the steps for it; Back steps out of
  * them before it leaves the page.
  */

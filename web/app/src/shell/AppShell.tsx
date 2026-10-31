@@ -51,7 +51,7 @@ export function AppShell() {
   if (mobile) {
     banner = (
       <Banner
-        title="Painho Lula no aplicativo."
+        title="LqMusic no aplicativo."
         detail="Navegadores de celular não executam a extensão de reprodução. O app Android inclui essa integração."
         action={
           <a className={bannerButtonClass} href={config.androidAppUrl} target="_blank" rel="noreferrer">
@@ -63,7 +63,7 @@ export function AppShell() {
   } else if (extension.state === 'missing' && !bannerDismissed) {
     banner = (
       <Banner
-        title="Reprodução com a extensão Painho Lula."
+        title="Reprodução com a extensão LqMusic."
         detail="Reprodução, sessão do YouTube Music, Spotify e Discord dependem da extensão. Letras e complementos funcionam sem ela."
         action={
           <PrefetchLink className={bannerButtonClass} to="/extension">

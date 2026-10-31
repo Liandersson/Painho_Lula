@@ -1,4 +1,4 @@
-# Validação da versão TV 1.3.0
+# Validação da versão TV 1.3.1
 
 - 82 testes de regressão do app passaram na preparação da versão, cobrindo histórico, seleção isolada, recomendações, navegação espacial, controles, pesquisa e restauração de posição.
 - TypeScript e Vite compilaram o modo Tizen.

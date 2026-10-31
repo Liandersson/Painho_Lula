@@ -1,15 +1,14 @@
-Painho Lula TV 1.3.0 — Samsung Tizen 9.0+
+LqMusic 1.3.1 — Samsung Tizen 9.0+
 
-- Recents local de até 200 músicas, carregadas em blocos de 20.
-- Navegação para controle remoto, entrada em play/pause, mute/desmute e retorno ao conteúdo.
-- Pesquisa com edição explícita, foco preservado e consultas espaçadas.
-- Continuação automática sem usar Recentes/playlists como fila implícita.
-- Tradução de letras para português quando o serviço da biblioteca está disponível.
+- Nova identidade LqMusic na TV, na interface e no instalador.
+- Novo ícone roxo fornecido pelo mantenedor, também usado na barra lateral e no favicon.
+- Guias de instalação e instruções para Codex/Claude Code atualizados.
+- IDs de instalação e chaves locais preservados para permitir atualização com o mesmo certificado de autor e conservar o histórico.
 
-Baixe **Instalacao.zip** no computador Linux, extraia e leia LEIA-ME.md. É runtime **sem assinatura**, não WGT universal. É necessário Tizen Studio e certificado Samsung do próprio usuário com o DUID da TV. O assistente assina e instala localmente; não recebe nem salva sua senha.
+O repositório continua temporariamente no endereço Liandersson/Painho_Lula, por escolha do mantenedor. O nome visível já é LqMusic.
 
-O arquivo **Source.zip** contém a fonte correspondente, GPL-3.0 e avisos de terceiros. SHA256SUMS.txt permite conferir os dois arquivos.
+Baixe **LqMusic-TV-1.3.1-Instalacao.zip**, extraia no computador Linux e siga LEIA-ME.md. O pacote é sem assinatura; cada usuário precisa do próprio certificado Samsung TV com o DUID autorizado. Não há WGT universal. Para atualizar uma instalação anterior, preserve seu certificado de autor.
 
-Modelo usado no desenvolvimento: UN50CU7700GXZD atualizado para Tizen 9.0. Outros modelos não foram validados. O teclado nativo e os novos caminhos de foco ainda precisam de conferência física. Login Google/biblioteca sincronizada/integrações de contas não têm paridade com Android. Recomendações podem errar gênero; tradução depende de interface não oficial do Google. Não há benchmarks inventados nem promessa de 100% de compatibilidade.
+A fonte correspondente está em **LqMusic-TV-1.3.1-Source.zip**; confira SHA256SUMS.txt. O app exige Tizen 9.0+. Modelo usado no desenvolvimento: UN50CU7700GXZD atualizada. Outros modelos e a nova identidade visual ainda precisam de conferência física. Recomendações não garantem gênero exato; tradução e reprodução dependem de serviços externos. Integrações de contas não têm paridade com Android.
 
-Créditos do código e design originais: BitChord, kushagrasinghx e colaboradores. Consulte NOTICE.md e LICENSE.
+Base original BitChord, de kushagrasinghx e colaboradores. GPL-3.0 e licenças de terceiros preservadas em LICENSE e NOTICE.md.

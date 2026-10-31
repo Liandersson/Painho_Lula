@@ -43,7 +43,7 @@ def main(argv=None):
         parser.error('Manifest da release não corresponde à versão do app.')
     args.output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='painho-release-') as tmp:
-        stage = Path(tmp) / f'Painho-Lula-TV-{version}'
+        stage = Path(tmp) / f'LqMusic-TV-{version}'
         stage.mkdir()
         copy_unsigned(args.runtime_from, stage / 'app')
         (stage / 'tools').mkdir()
@@ -52,18 +52,18 @@ def main(argv=None):
         for name in ['LICENSE', 'NOTICE.md']:
             shutil.copy2(root / name, stage / name)
         shutil.copy2(root / 'docs/INSTALAR-NA-TV.md', stage / 'LEIA-ME.md')
-        (stage / 'FONTE.txt').write_text(f'Código-fonte completo: Painho-Lula-TV-{version}-Source.zip na mesma release em https://github.com/Liandersson/Painho_Lula/releases\n', encoding='utf8')
+        (stage / 'FONTE.txt').write_text(f'Código-fonte completo: LqMusic-TV-{version}-Source.zip na mesma release em https://github.com/Liandersson/Painho_Lula/releases\n', encoding='utf8')
         # Distribui a licença e o patch da biblioteca modificada junto do binário.
         shutil.copytree(root / 'web/patches', stage / 'third-party/am-lyrics')
-        install_zip = args.output / f'Painho-Lula-TV-{version}-Instalacao.zip'
+        install_zip = args.output / f'LqMusic-TV-{version}-Instalacao.zip'
         with zipfile.ZipFile(install_zip, 'w', zipfile.ZIP_DEFLATED, compresslevel=3) as archive:
             for path in sorted(stage.rglob('*')):
                 if path.is_file():
                     archive.write(path, path.relative_to(stage.parent))
-    source_zip = args.output / f'Painho-Lula-TV-{version}-Source.zip'
+    source_zip = args.output / f'LqMusic-TV-{version}-Source.zip'
     with zipfile.ZipFile(source_zip, 'w', zipfile.ZIP_DEFLATED, compresslevel=3) as archive:
         for path in source_files(root):
-            archive.write(path, Path(f'Painho-Lula-TV-{version}-Source') / path.relative_to(root))
+            archive.write(path, Path(f'LqMusic-TV-{version}-Source') / path.relative_to(root))
     checksums = args.output / 'SHA256SUMS.txt'
     checksums.write_text(''.join(f'{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}\n' for path in [install_zip, source_zip]), encoding='utf8')
     print(install_zip)
