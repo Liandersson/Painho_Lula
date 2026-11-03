@@ -12,7 +12,7 @@ export function mostPlayed(entries: Entry[], now = Date.now()): Entry[] {
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>;
 interface RecentState { entries: Entry[]; record: (track: Track) => void; touch: (track: Track) => void }
 
-function cleanTrack(value: unknown): Track | null {
+export function cleanTrack(value: unknown): Track | null {
   if (!value || typeof value !== 'object') return null;
   const t = value as Partial<Track>;
   if (typeof t.videoId !== 'string' || !t.videoId || typeof t.title !== 'string' || !Array.isArray(t.artists)) return null;

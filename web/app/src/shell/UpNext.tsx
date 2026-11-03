@@ -59,13 +59,13 @@ function Row({
         {/* The ✕ over the artwork's top-left, on hover. */}
         <button
           className="absolute -top-1.5 -left-1.5 hidden size-[22px] place-items-center rounded-full bg-thick-material text-primary shadow-[0_1px_3px_#0004] [backdrop-filter:blur(10px)] group-hover/row:grid"
-          aria-label={`Remove ${track.title}`}
+          aria-label={`${isTizenBuild ? 'Remover' : 'Remove'} ${track.title}`}
           onClick={() => removeAt(at)}
         >
           <X size={12} strokeWidth={3} />
         </button>
       </div>
-      <button className="flex min-w-0 flex-col text-start" onClick={() => jumpTo(at)} aria-label={`Play ${track.title}`}>
+      <button className="flex min-w-0 flex-col text-start" onClick={() => jumpTo(at)} aria-label={`${isTizenBuild ? 'Tocar' : 'Play'} ${track.title}`}>
         <span className="truncate type-body text-primary">{track.title}</span>
         <span className="truncate type-body text-secondary">{track.artists.map((a) => a.name).join(', ')}</span>
       </button>
@@ -73,7 +73,7 @@ function Row({
         <span className="type-body tabular-nums text-secondary group-hover/row:invisible group-has-[[data-open]]/row:invisible">{formatDuration(track.durationSec)}</span>
         <button
           className="absolute inset-y-0 right-0 my-auto hidden size-7 place-items-center rounded-full text-key group-hover/row:grid data-open:grid"
-          aria-label={`More options for ${track.title}`}
+          aria-label={`${isTizenBuild ? 'Opções para' : 'More options for'} ${track.title}`}
           aria-haspopup="menu"
           data-open={anchor !== null || undefined}
           onClick={(e) => setAnchor(anchor ? null : e.currentTarget)}
@@ -83,7 +83,7 @@ function Row({
       </div>
       {anchor && (
         <Menu anchor={anchor} onClose={close} label={track.title}>
-          <MenuItem onSelect={() => (close(), jumpTo(at))}>Play Now</MenuItem>
+          <MenuItem onSelect={() => (close(), jumpTo(at))}>{isTizenBuild ? 'Tocar agora' : 'Play Now'}</MenuItem>
           <MenuItem
             onSelect={() => {
               close();
@@ -91,11 +91,11 @@ function Row({
               playNext([track], entry.source);
             }}
           >
-            Play Next
+            {isTizenBuild ? 'Tocar a seguir' : 'Play Next'}
           </MenuItem>
           <MenuSeparator />
           <MenuItem destructive onSelect={() => (close(), removeAt(at))}>
-            Remove from Up Next
+            {isTizenBuild ? 'Remover da fila' : 'Remove from Up Next'}
           </MenuItem>
         </Menu>
       )}
@@ -146,10 +146,10 @@ export function UpNext() {
   return (
     <>
       <div className="flex items-center gap-1.5 px-5 pt-[23px] pb-3">
-        <h3 className="flex-1 type-title-2-emphasized">Up Next</h3>
+        <h3 className="flex-1 type-title-2-emphasized">{isTizenBuild ? 'Fila' : 'Up Next'}</h3>
         {canClear && (
           <button className="mr-1 type-title-3 text-key" onClick={clearUpNext}>
-            Clear
+            {isTizenBuild ? 'Limpar' : 'Clear'}
           </button>
         )}
         <button
@@ -161,7 +161,7 @@ export function UpNext() {
         >
           <InfinityIcon size={16} strokeWidth={2.4} />
         </button>
-        <button className={square} aria-label="Playback options" aria-haspopup="menu" onClick={(e) => setAnchor(e.currentTarget)}>
+        <button className={square} aria-label={isTizenBuild ? 'Opções de reprodução' : 'Playback options'} aria-haspopup="menu" onClick={(e) => setAnchor(e.currentTarget)}>
           <MoreHorizontal size={16} />
         </button>
         {anchor && (
@@ -169,7 +169,7 @@ export function UpNext() {
             <MenuHeader>Crossfade</MenuHeader>
             {CROSSFADE_CHOICES.map((seconds) => (
               <MenuItem key={seconds} checked={!automix && crossfadeSec === seconds} onSelect={() => (close(), setCrossfade(seconds))}>
-                {seconds === 0 ? 'Off' : `${seconds} seconds`}
+                {seconds === 0 ? (isTizenBuild ? 'Desativado' : 'Off') : `${seconds} ${isTizenBuild ? 'segundos' : 'seconds'}`}
               </MenuItem>
             ))}
             <MenuItem checked={automix} onSelect={() => (close(), setAutomix(true))}>
@@ -178,15 +178,15 @@ export function UpNext() {
           </Menu>
         )}
       </div>
-      {playingFrom && <p className="truncate px-5 pb-2 type-callout text-secondary">Playing from {playingFrom}</p>}
+      {playingFrom && <p className="truncate px-5 pb-2 type-callout text-secondary">{isTizenBuild ? 'Tocando de' : 'Playing from'} {playingFrom}</p>}
 
       {upcoming.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 pb-20 text-center type-callout text-secondary">
-          <p className="type-callout-emphasized">Nothing in Up Next</p>
+          <p className="type-callout-emphasized">{isTizenBuild ? 'Sua fila está vazia' : 'Nothing in Up Next'}</p>
           <p>
             {autoplay && repeat === 'off' && index >= 0
               ? (isTizenBuild ? 'Buscando músicas parecidas com a referência inicial.' : 'AutoPlay is finding similar music.')
-              : 'Songs you play next appear here.'}
+              : (isTizenBuild ? 'As próximas músicas aparecem aqui.' : 'Songs you play next appear here.')}
           </p>
         </div>
       ) : (
@@ -197,7 +197,7 @@ export function UpNext() {
               <h4 className="mx-2.5 mt-[18px] mb-0.5 flex items-center gap-1.5 type-callout-emphasized">
                 <InfinityIcon size={14} strokeWidth={2.4} /> {isTizenBuild ? "Continuar tocando" : "AutoPlay"}
               </h4>
-              <p className="mx-2.5 mb-2 type-callout text-secondary">Similar music, from YouTube Music’s radio.</p>
+              <p className="mx-2.5 mb-2 type-callout text-secondary">{isTizenBuild ? 'Músicas relacionadas pela rádio do YouTube Music.' : 'Similar music, from YouTube Music’s radio.'}</p>
               <ol className={list}>{rows(afterAutoplay)}</ol>
             </>
           )}

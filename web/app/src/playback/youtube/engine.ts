@@ -1,3 +1,6 @@
+import { isTizenBuild } from '@/platform/tizen/services';
+import { useTvPreferences } from '@/platform/tizen/preferences';
+import { codecPreference, selectAudioVariant, TV_BUFFERING } from '@/platform/tizen/audioPolicy';
 import { SabrStreamingAdapter } from 'googlevideo/sabr-streaming-adapter';
 import { buildSabrFormat } from 'googlevideo/utils';
 import shaka from 'shaka-player/dist/shaka-player.compiled';
@@ -98,17 +101,24 @@ export class YouTubeEngine {
   onFatal: (videoId: string, message: string, permanent: boolean) => void = () => {};
   /** Raised when the engine moved a track to another client mid-playback. */
   onRecovered: (track: LoadedTrack) => void = () => {};
+  onLoudness: (loudnessDb: number | null) => void = () => {};
 
   constructor(audio: HTMLAudioElement) {
     this.audio = audio;
     // Opus (itag 251) when the browser can decode it in MSE, AAC (140)
     // otherwise, which is Safari: unsupported, but it must not crash.
-    const opus = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported('audio/webm; codecs="opus"');
-    this.preferredCodecs = opus ? ['opus', 'mp4a'] : ['mp4a'];
+    let opus = false;
+    try { opus = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported('audio/webm; codecs="opus"'); } catch { /* Unsupported codec probe on some TV engines. */ }
+    this.preferredCodecs = codecPreference(opus, isTizenBuild ? useTvPreferences.getState().audioMode : 'quality');
   }
 
   private async ensurePlayer(): Promise<shaka.Player> {
-    if (this.player) return this.player;
+    if (isTizenBuild) {
+      let opus = false;
+      try { opus = typeof MediaSource !== 'undefined' && MediaSource.isTypeSupported('audio/webm; codecs="opus"'); } catch { /* Some TV engines reject codec probes. */ }
+      this.preferredCodecs = codecPreference(opus, useTvPreferences.getState().audioMode);
+    }
+    if (this.player) { this.player.configure({ preferredAudioCodecs: this.preferredCodecs }); return this.player; }
     shaka.polyfill.installAll();
     if (!shaka.Player.isBrowserSupported()) throw new Error('This browser can’t play YouTube streams (no Media Source Extensions)');
     const player = new shaka.Player();
@@ -128,9 +138,9 @@ export class YouTubeEngine {
       // the body built at 0.4s). With no Shaka-level retries, the failure
       // callback restarts streaming instead, which builds a fresh request.
       streaming: {
-        bufferingGoal: 120,
-        rebufferingGoal: 0.01,
-        bufferBehind: 300,
+        bufferingGoal: isTizenBuild ? TV_BUFFERING.bufferingGoal : 120,
+        rebufferingGoal: isTizenBuild ? TV_BUFFERING.rebufferingGoal : 0.01,
+        bufferBehind: isTizenBuild ? TV_BUFFERING.bufferBehind : 300,
         retryParameters: { maxAttempts: 1, baseDelay: 1000, backoffFactor: 1, fuzzFactor: 0.5, timeout: 30_000 },
         // A refusal is handled by moving to the next client (onShakaError);
         // retrying it would only collect more 403s.
@@ -242,6 +252,7 @@ export class YouTubeEngine {
     const format = `${selected.label} ${mode}`;
     if (direct) this.direct = resolved;
 
+    this.onLoudness(info.player_config?.audio_config?.loudness_db ?? null);
     if (autoplay) {
       await this.audio.play().catch((error: unknown) => {
         // Autoplay without a gesture is refused; the track is loaded and the
@@ -392,7 +403,7 @@ export class YouTubeEngine {
 
   /** Picks Opus 251 (else AAC 140): the preferred codec's highest bitrate, avoiding DRC renditions. */
   private selectAudio(player: shaka.Player): { label: string; stats: Omit<StreamStats, 'mode'> } {
-    const tracks = player.getVariantTracks().filter((t) => !/drc/i.test(t.originalAudioId ?? ''));
+    const tracks = player.getVariantTracks();
     const statsOf = (t: shaka.extern.Track) => ({
       codec: codecName(t.audioCodec),
       itag: (t.originalAudioId ?? '').split('-')[0] || null,
@@ -400,15 +411,11 @@ export class YouTubeEngine {
       sampleRateHz: t.audioSamplingRate,
       channels: t.channelsCount,
     });
-    for (const codec of this.preferredCodecs) {
-      const best = tracks
-        .filter((t) => t.audioCodec?.startsWith(codec))
-        .sort((a, b) => (b.audioBandwidth ?? b.bandwidth) - (a.audioBandwidth ?? a.bandwidth))[0];
-      if (best) {
-        if (!best.active) player.selectVariantTrack(best, true);
-        const itag = (best.originalAudioId ?? '').split('-')[0];
-        return { label: `${itag} ${codec} ${Math.round((best.audioBandwidth ?? best.bandwidth) / 1000)}kbps`, stats: statsOf(best) };
-      }
+    const best = selectAudioVariant(tracks, this.preferredCodecs, isTizenBuild ? useTvPreferences.getState().audioMode : 'quality');
+    if (best) {
+      if (!best.active) player.selectVariantTrack(best, true);
+      const itag = (best.originalAudioId ?? '').split('-')[0];
+      return { label: `${itag} ${best.audioCodec} ${Math.round((best.audioBandwidth ?? best.bandwidth) / 1000)}kbps`, stats: statsOf(best) };
     }
     const active = player.getVariantTracks().find((t) => t.active);
     return active

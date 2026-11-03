@@ -1,3 +1,5 @@
+import { volumeCorrection } from '@/platform/tizen/audioPolicy';
+import { useTvPreferences } from '@/platform/tizen/preferences';
 import type { DetectedExtension } from '@bitchord/shared/bridge';
 import { create } from 'zustand';
 import type { Track } from '@/data/music/types';
@@ -77,7 +79,7 @@ interface PlayerState extends Settings {
   mixing: boolean;
 
   /** Plays [tracks] as the context (an album, a playlist), from [startIndex]. */
-  playTracks: (tracks: Track[], startIndex: number, source: QueueSource) => void;
+  playTracks: (tracks: Track[], startIndex: number, source: QueueSource, startSec?: number) => void;
   /** Plays one song on its own (search, home); AutoPlay carries on after it. */
   playTrack: (track: Track, source: QueueSource) => void;
   /** Plays a bare video id (the Debug page). */
@@ -144,6 +146,7 @@ interface Deck {
   audio: HTMLAudioElement;
   /** The crossfade's share of the volume, 0–1. */
   gain: number;
+  loudnessDb: number | null;
 }
 
 let decks: Deck[] | null = null;
@@ -188,7 +191,8 @@ function getDecks(): Promise<Deck[]> {
       // is fetched with CORS (prompt §6, the Web Audio caveat).
       audio.crossOrigin = 'anonymous';
       const engine = new YouTubeEngine(audio);
-      const deck: Deck = { engine, audio, gain: 1 };
+      const deck: Deck = { engine, audio, gain: 1, loudnessDb: null };
+      engine.onLoudness = value => { deck.loudnessDb = value; if (isTizenBuild) applyVolumes(); };
       engine.onFatal = (videoId, message) => {
         if (decks?.[active] !== deck) return;
         trackLog.e(`stopped: ${message}`, videoId);
@@ -222,11 +226,11 @@ function applyVolumes() {
     graph.master.gain.setTargetAtTime(level, now, 0.015);
     (decks ?? []).forEach((deck, n) => {
       deck.audio.volume = 1;
-      graph!.decks[n]!.fader.gain.setTargetAtTime(deck.gain, now, 0.015);
+      graph!.decks[n]!.fader.gain.setTargetAtTime(deck.gain * volumeCorrection(deck.loudnessDb, isTizenBuild && useTvPreferences.getState().leveling), now, 0.015);
     });
     return;
   }
-  for (const deck of decks ?? []) deck.audio.volume = level * deck.gain;
+  for (const deck of decks ?? []) deck.audio.volume = level * deck.gain * volumeCorrection(deck.loudnessDb, isTizenBuild && useTvPreferences.getState().leveling);
 }
 
 // ---- AutoMix (playback/automix): the two decks routed through Web Audio, mixed like a DJ ----
@@ -431,7 +435,7 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   automixState: null,
   mixing: false,
 
-  playTracks(tracks, startIndex, source) {
+  playTracks(tracks, startIndex, source, startSec = 0) {
     if (!tracks.length) return;
     if (isTizenBuild && tracks[startIndex]) continuation.start(tracks[startIndex]!);
     const { queue, index, shuffle } = get();
@@ -439,11 +443,11 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
     if (shuffle) {
       canonical = positions(built.timeline);
       set({ queue: shuffledStartingOrder(built.timeline, built.startIndex) });
-      void startAt(0);
+      void startAt(0, { startSec });
     } else {
       canonical = null;
       set({ queue: built.timeline });
-      void startAt(built.startIndex);
+      void startAt(built.startIndex, { startSec });
     }
     intent();
   },
@@ -826,7 +830,7 @@ function refillAutoplay(force = false, anySeed = false): Promise<void> {
       const { fetchRadio } = await import('@/data/music/api');
       let current = usePlayer.getState();
       let seedIsVideo = false;
-      let extra = isTizenBuild ? continuation.take(current.queue.map(e => e.track), needed) : [];
+      let extra = isTizenBuild ? continuation.take(current.queue.map(e => e.track), needed, useTvPreferences.getState().hidden) : [];
       if (!extra.length) {
         if (isTizenBuild && !continuation.canFetch()) return;
         if (isTizenBuild) continuation.deferFetch();
@@ -835,7 +839,7 @@ function refillAutoplay(force = false, anySeed = false): Promise<void> {
         seedIsVideo = radio.seedIsVideo;
         current = usePlayer.getState();
         if (isTizenBuild) continuation.offer(radio.candidates, seedIsVideo);
-        extra = isTizenBuild ? continuation.take(current.queue.map(e => e.track), needed) : extendStation(
+        extra = isTizenBuild ? continuation.take(current.queue.map(e => e.track), needed, useTvPreferences.getState().hidden) : extendStation(
         current.queue.map((e) => e.track),
         radio.candidates,
         needed,
@@ -1152,3 +1156,5 @@ export const partyPlayer = {
     usePlayer.setState({ queue: [...queue.slice(0, index + 1), ...tracks.map((t, i) => asEntry(t, tiers[i] ?? 'user', PARTY_SOURCE))] });
   },
 };
+
+if (isTizenBuild) useTvPreferences.subscribe((state, previous) => { if (state.leveling !== previous.leveling) applyVolumes(); });

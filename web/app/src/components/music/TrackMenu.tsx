@@ -1,4 +1,6 @@
-import { ChevronLeft, ChevronRight, ListEnd, ListPlus, ListStart, MoreHorizontal, Star } from 'lucide-react';
+import { isTizenBuild } from '@/platform/tizen/services';
+import { useTvPreferences } from '@/platform/tizen/preferences';
+import { ChevronLeft, ChevronRight, ListEnd, ListPlus, ListStart, MoreHorizontal, Star, Heart, EyeOff } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Menu, MenuHeader, MenuItem, MenuSeparator, type MenuPlacement } from '@/components/Menu';
 import {
@@ -76,6 +78,11 @@ function AccountItems({ track, onClose, onPlaylists }: { track: Track; onClose: 
   );
 }
 
+function LocalTasteItems({ track, onClose }: { track: Track; onClose: () => void }) {
+  const favorite = useTvPreferences(s => s.favorites.some(t => t.videoId === track.videoId));
+  return <><MenuSeparator/><MenuItem icon={<Heart size={18} fill={favorite ? 'currentColor' : 'none'}/>} onSelect={() => { useTvPreferences.getState().toggleFavorite(track); onClose(); }}>{favorite ? 'Remover das favoritas' : 'Adicionar às favoritas'}</MenuItem><MenuItem icon={<EyeOff size={18}/>} onSelect={() => { useTvPreferences.getState().hide(track.videoId); onClose(); }}>Não recomendar esta música</MenuItem></>;
+}
+
 function TrackMenuItems({ track, onClose }: { track: Track; onClose: () => void }) {
   const [view, setView] = useState<'main' | 'playlists'>('main');
   const signedIn = useSignedIn();
@@ -86,11 +93,12 @@ function TrackMenuItems({ track, onClose }: { track: Track; onClose: () => void 
   return (
     <>
       <MenuItem icon={<ListStart size={15} />} onSelect={() => (onClose(), playNext([track]))}>
-        Play Next
+        {isTizenBuild ? 'Tocar a seguir' : 'Play Next'}
       </MenuItem>
       <MenuItem icon={<ListEnd size={15} />} onSelect={() => (onClose(), addToQueue([track]))}>
-        Add to Queue
+        {isTizenBuild ? 'Adicionar à fila' : 'Add to Queue'}
       </MenuItem>
+      {isTizenBuild && <LocalTasteItems track={track} onClose={onClose} />}
       {signedIn && <AccountItems track={track} onClose={onClose} onPlaylists={() => setView('playlists')} />}
     </>
   );
@@ -124,7 +132,7 @@ export function TrackMenu({
     <>
       <button
         className={className}
-        aria-label={`More options for ${track.title}`}
+        aria-label={`${isTizenBuild ? 'Opções para' : 'More options for'} ${track.title}`}
         aria-haspopup="menu"
         aria-expanded={anchor !== null}
         data-open={anchor !== null || undefined}

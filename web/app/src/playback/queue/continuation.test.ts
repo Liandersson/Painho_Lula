@@ -25,3 +25,11 @@ describe('anchored continuation', () => {
   expect(session.take([track('0')],1)[0]?.videoId).toBe('1');
  });
 });
+
+it('does not recommend tracks explicitly hidden on the TV', () => {
+  const session = new ContinuationSession();
+  const make = (videoId: string) => ({videoId,title:videoId,artists:[{name:'Artist',id:null}],album:null,durationSec:120,explicit:false,thumbnail:null,index:null,plays:null});
+  session.start(make('seed'));
+  session.offer([{track:make('hidden'),isVideo:false},{track:make('allowed'),isVideo:false}]);
+  expect(session.take([],2,['hidden']).map(t=>t.videoId)).toEqual(['allowed']);
+});

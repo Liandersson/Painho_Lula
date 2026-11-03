@@ -154,7 +154,7 @@ export function createSpatialNavigation(doc: Document = document) {
       }
       if (sidebar && direction === 'Right') {
         const content = items.filter(item => item.element.closest('#scrollable-page'));
-        const next = content.find(item => item.element === playerReturn) ?? content.find(item => item.element.hasAttribute('data-tv-primary')) ?? content[0];
+        const next = content.find(item => item.element === playerReturn) ?? content.find(item => item.element.hasAttribute('data-tv-default-focus')) ?? content.find(item => item.element.hasAttribute('data-tv-primary')) ?? content[0];
         if (next) { next.element.focus({preventScroll:true}); reveal(next.element); }
         return;
       }
@@ -190,7 +190,7 @@ export function createSpatialNavigation(doc: Document = document) {
         const play=items.find(item=>item.element.hasAttribute('data-tv-player-toggle'));play?.element.focus({preventScroll:true});return;
       }
       const settings = active.closest('[data-tv-settings]');
-      if (settings && !horizontal) {
+      if (settings && !horizontal && !active.closest('.tv-settings-topics')) {
         const controls = items.filter(item => settings.contains(item.element));
         const index = controls.findIndex(item => item.element === active);
         const next = controls[index + (direction === 'Down' ? 1 : -1)];

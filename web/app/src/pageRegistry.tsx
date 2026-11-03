@@ -26,6 +26,7 @@ interface PageRoute {
 export const pages: PageRoute[] = [
   { path: '/home', load: () => import('@/pages/HomePage'), skeleton: <HomeSkeleton /> },
   { path: '/new', load: () => import('@/pages/NewPage'), skeleton: <NewSkeleton /> },
+  { path: '/favorites', load: () => import('@/platform/tizen/TvFavorites'), skeleton: <PlainSkeleton /> },
   { path: '/recents', load: () => import('@/pages/RecentsPage'), skeleton: <PlainSkeleton /> },
   { path: '/search', load: () => import('@/pages/SearchPage'), skeleton: <SearchSkeleton /> },
   { path: '/album/:id', load: () => import('@/pages/AlbumPage'), skeleton: <AlbumSkeleton /> },
@@ -61,5 +62,6 @@ export function preloadRoute(href: string): void {
   void page?.load().catch(() => {
     // A failed prefetch is retried by the real navigation.
   });
-  prefetchPageData(pathname);
+  // TV pointer travel warms code only; data is fetched after choosing a page.
+  if (import.meta.env.MODE !== 'tizen') prefetchPageData(pathname);
 }

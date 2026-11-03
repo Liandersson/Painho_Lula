@@ -120,9 +120,9 @@ export function useBrowse(link: BrowseLink) {
   const { ready } = useYouTubeReady();
   return useQuery({ ...browseQuery(link), enabled: ready });
 }
-export function useHome() {
+export function useHome(enabled = true) {
   const { ready } = useYouTubeReady();
-  return useInfiniteQuery({ ...homeQuery(), enabled: ready });
+  return useInfiniteQuery({ ...homeQuery(), enabled: ready && enabled });
 }
 export function usePlaylist(id: string) {
   const { ready } = useYouTubeReady();

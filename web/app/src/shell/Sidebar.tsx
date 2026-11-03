@@ -1,4 +1,4 @@
-import { ArrowUpRight, ListMusic, Settings } from 'lucide-react';
+import { ArrowUpRight, ListMusic, Settings, Heart } from 'lucide-react';
 import { MdOutlineExtension } from 'react-icons/md';
 import { PrefetchLink, PrefetchNavLink } from '@/components/PrefetchLink';
 import { LogoMark } from '@/components/icons/LogoMark';
@@ -160,11 +160,12 @@ export function Sidebar() {
           </PrefetchLink>
         </div>
         <div data-tv-sidebar-items className="min-h-0 flex-1 overflow-y-auto pr-3 pl-5 [scrollbar-width:none]">
-          <NavList items={isTizenBuild ? [...PRIMARY, {to:"/recents",label:"Recents",Icon:RecentlyAddedIcon}] : PRIMARY} onNavigate={close} />
+          <NavList items={isTizenBuild ? [{to:"/home",label:"Para você",Icon:HomeIcon},{to:"/search",label:"Buscar",Icon:SearchIcon},{to:"/favorites",label:"Favoritas",Icon:Heart},{to:"/recents",label:"Recentes",Icon:RecentlyAddedIcon},{to:"/new",label:"Descobrir",Icon:NewIcon}] : PRIMARY} onNavigate={close} />
           {signedIn && <LibraryNav onNavigate={close} />}
           {spotifySignedIn && <SpotifyNav onNavigate={close} />}
         </div>
         <div data-tv-sidebar-footer className="flex flex-col gap-2 pt-3 pr-3 pb-5 pl-5">
+          {isTizenBuild && <PrefetchNavLink to="/settings" className={item} onClick={close}><span className={icon}><Settings size={23}/></span><span className={navLabel}>Configurações</span></PrefetchNavLink>}
           <PrefetchNavLink to="/extension" className={item} onClick={close}>
             {/* Chrome's own toolbar glyph for extensions (Material "extension"). */}
             <span className={icon}>

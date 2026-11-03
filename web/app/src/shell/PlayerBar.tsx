@@ -58,23 +58,23 @@ export function PlayerBar() {
         aria-label="Player"
       >
         <div className="flex items-center justify-between pr-2">
-          <button data-tv-player-order="0" className={toggle} aria-label="Shuffle" aria-pressed={shuffle} onClick={toggleShuffle}>
+          <button data-tv-player-order="0" className={toggle} aria-label={isTizenBuild ? 'Aleatório' : 'Shuffle'} aria-pressed={shuffle} onClick={toggleShuffle}>
             <ShuffleIcon size={28} />
           </button>
           <div className="flex items-center gap-1.5">
-            <button data-tv-player-order="1" className={transport} disabled={!hasTrack} aria-label="Previous" onClick={previous}>
+            <button data-tv-player-order="1" className={transport} disabled={!hasTrack} aria-label={isTizenBuild ? 'Anterior' : 'Previous'} onClick={previous}>
               <BackwardIcon size={26} />
             </button>
-            <button className={transport} data-tv-player-toggle data-tv-player-order="2" disabled={!hasTrack} aria-label={playing ? 'Pause' : 'Play'} onClick={togglePlay}>
+            <button className={transport} data-tv-player-toggle data-tv-player-order="2" disabled={!hasTrack} aria-label={isTizenBuild ? (playing ? 'Pausar' : 'Tocar') : (playing ? 'Pause' : 'Play')} onClick={togglePlay}>
               {playing ? <PauseIcon size={28} /> : <PlayIcon size={28} />}
             </button>
-            <button data-tv-player-order="3" className={transport} disabled={!hasTrack || !hasNext} aria-label="Next" onClick={next}>
+            <button data-tv-player-order="3" className={transport} disabled={!hasTrack || !hasNext} aria-label={isTizenBuild ? 'Próxima' : 'Next'} onClick={next}>
               <ForwardIcon size={26} />
             </button>
           </div>
           <button
             data-tv-player-order="4" className={toggle}
-            aria-label={repeat === 'one' ? 'Repeat one' : repeat === 'all' ? 'Repeat all' : 'Repeat'}
+            aria-label={isTizenBuild ? (repeat === 'one' ? 'Repetir uma' : repeat === 'all' ? 'Repetir todas' : 'Repetir') : (repeat === 'one' ? 'Repeat one' : repeat === 'all' ? 'Repeat all' : 'Repeat')}
             aria-pressed={repeat !== 'off'}
             onClick={cycleRepeat}
           >
@@ -97,12 +97,12 @@ export function PlayerBar() {
           {!isTizenBuild && <FavoriteButton videoId={videoId} className={fading} />}
           {track && <span data-tv-player-order="6"><TrackMenu track={track} className={fading} placement="above-end" onFullScreen={isTizenBuild ? () => useUi.getState().setFullScreen(true) : undefined} /></span>}
           {/* Always here: the panel itself says whether this track has lyrics, and from where. */}
-          <button data-tv-player-order="7" className={fading} aria-label="Lyrics" aria-pressed={sidePanel === 'lyrics'} onClick={() => toggleSidePanel('lyrics')}>
+          <button data-tv-player-order="7" className={fading} aria-label={isTizenBuild ? 'Letras' : 'Lyrics'} aria-pressed={sidePanel === 'lyrics'} onClick={() => toggleSidePanel('lyrics')}>
             {sidePanel === 'lyrics' ? <LyricsActiveIcon size={18} /> : <LyricsIcon size={18} />}
           </button>
           <button
             data-tv-player-order="8" className={fading}
-            aria-label="Up Next"
+            aria-label={isTizenBuild ? 'Fila' : 'Up Next'}
             aria-pressed={sidePanel === 'up-next'}
             onClick={() => toggleSidePanel('up-next')}
           >

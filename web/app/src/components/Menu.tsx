@@ -1,3 +1,4 @@
+import { isTizenBuild } from '@/platform/tizen/services';
 import { Check } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
@@ -44,7 +45,9 @@ export function Menu({ anchor, placement = 'below-end', onClose, label, matchWid
   }, [anchor, placement, matchWidth]);
 
   useEffect(() => {
-    panel.current?.querySelector<HTMLElement>('[role^="menuitem"]')?.focus({ preventScroll: true });
+    const menu = panel.current;
+    const returnScope = anchor.closest('section');
+    menu?.querySelector<HTMLElement>('[role^="menuitem"]')?.focus({ preventScroll: true });
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.stopPropagation();
@@ -68,6 +71,10 @@ export function Menu({ anchor, placement = 'below-end', onClose, label, matchWid
       document.removeEventListener('keydown', onKey, true);
       document.removeEventListener('scroll', onScroll, true);
       window.removeEventListener('resize', onClose);
+      if (isTizenBuild && (document.activeElement === document.body || menu?.contains(document.activeElement))) {
+        const target = anchor.isConnected ? anchor : returnScope?.isConnected ? returnScope.querySelector<HTMLElement>('[data-tv-primary]') : null;
+        target?.focus({ preventScroll: true });
+      }
     };
   }, [anchor, onClose]);
 

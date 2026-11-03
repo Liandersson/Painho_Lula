@@ -1,3 +1,5 @@
+import TvSettings from '@/platform/tizen/TvSettings';
+import { isTizenBuild } from '@/platform/tizen/services';
 import { ChevronRight, Users } from 'lucide-react';
 import { lazy, Suspense, useState, type ComponentType, type ReactNode } from 'react';
 import { MdOutlineExtension } from 'react-icons/md';
@@ -53,7 +55,7 @@ function youtubeText(auth: ReturnType<typeof useYtAuth>): string {
  * Settings (SettingsSheet on the phone): the account and its integrations,
  * Listen Together, playback and lyrics, in the same grouped rows.
  */
-export default function SettingsPage() {
+function DesktopSettingsPage() {
   const extension = useExtension();
   const yt = useYtAuth();
   const discord = useDiscord();
@@ -207,3 +209,5 @@ export default function SettingsPage() {
     </div>
   );
 }
+
+export default function SettingsPage() { return isTizenBuild ? <TvSettings/> : <DesktopSettingsPage/>; }

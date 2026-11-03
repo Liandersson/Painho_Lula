@@ -1,14 +1,18 @@
-LqMusic 1.3.2 — desempenho na Samsung Tizen 9.0+
+LqMusic 1.4.0 — sua música, do seu jeito na TV
 
-- Navegação reaproveita as medidas da tela quando o foco muda sem rolagem; mudanças de conteúdo, classes, modais e rolagem continuam invalidando o cache.
-- Registro das teclas do controle permanece ativo entre trocas de página.
-- Fundo do player usa um canvas estático de 64 × 40, em vez de WebGL em resolução de tela. Cores da capa preservadas, sem transição contínua.
-- Capas animadas Apple e brilho desfocado do player desativados na TV para reduzir decodificação, rede e composição.
-- Barra de progresso atualiza até dez vezes por segundo na TV, preservando ajuste imediato pelo controle; suspende o trabalho quando o app fica oculto.
-- Capas limpam tentativas pendentes ao sair da tela e reiniciam seu estado quando a imagem muda.
+- Nova Home para Samsung Tizen: navegação clara, destaque estático e temas escolhidos por você.
+- Recomendações usam favoritas e histórico qualificado; artistas frequentes aparecem nos temas. Sem histórico, a Home apresenta descobertas sem inventar seu gosto.
+- Favoritas locais, tela própria e opção de ocultar músicas das sugestões. Tudo funciona sem conta.
+- Controle e cursor podem ser usados juntos; repetição das setas limitada, foco recuperado ao fechar menus e alvos de clique maiores.
+- Listas da Home têm tamanho limitado e carregamento explícito. Desativar descobertas evita novas consultas da Home.
+- Modos de áudio Melhor disponível, Compatibilidade AAC e Economia de dados; seleção por codec suportado e bitrate dentro do codec. Equilíbrio de volume opcional atenua faixas mais altas, sem amplificação artificial.
+- Buffer de áudio limitado para reduzir retenção de memória. A qualidade real continua dependendo da fonte e da saída da TV.
+- Retomada opcional da fila e da posição ao reabrir, sem reprodução automática. Salvamento limitado a 30 faixas e 30 dias.
+- Configurações em português com texto ampliado, temas, descobertas e reprodução contínua.
+- Mantidas as otimizações 1.3.2: fundo estático, capas animadas desativadas na TV, progresso com atualização limitada e cache da navegação espacial.
 
-Baixe LqMusic-TV-1.3.2-Instalacao.zip e siga LEIA-ME.md. O pacote não contém assinatura ou certificados. Para atualizar mantendo a instalação e o histórico, use o mesmo certificado de autor. Fonte correspondente: LqMusic-TV-1.3.2-Source.zip; confira SHA256SUMS.txt.
+Pacote público sem certificados: LqMusic-TV-1.4.0-Instalacao.zip. Fonte correspondente: LqMusic-TV-1.4.0-Source.zip; confira SHA256SUMS.txt. Use seu certificado de autor para atualizar. IDs do app e histórico existente preservados.
 
-As reduções de trabalho são verificadas por testes automatizados. Fluidez, latência e memória na UN50CU7700GXZD precisam de medição física; não há promessa de FPS ou compatibilidade universal. Não foram alterados IDs do app nem chaves de histórico. Reprodução e letras continuam dependendo de serviços externos.
+Compatibilidade configurada: Samsung Tizen 9.0+. Não há promessa de FPS, áudio sem perdas ou funcionamento universal. Reprodução, busca, recomendações e letras dependem de serviços externos. Os termos de busca e referências de recomendação são enviados ao serviço de música; favoritas e preferências ficam localmente.
 
 Base original BitChord, de kushagrasinghx e colaboradores. GPL-3.0 e licenças de terceiros preservadas em LICENSE e NOTICE.md.
