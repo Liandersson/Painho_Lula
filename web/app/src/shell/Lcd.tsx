@@ -109,7 +109,9 @@ export function Lcd() {
   if (!nowPlaying) {
     return (
       <div className="grid h-full place-items-center text-tertiary">
-        <LogoMark size={26} />
+        {isTizenBuild ? (
+          <div className="tv-player-empty"><LogoMark size={30}/><span>Escolha uma música para começar</span></div>
+        ) : <LogoMark size={26} />}
       </div>
     );
   }

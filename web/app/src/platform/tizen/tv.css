@@ -350,3 +350,5 @@ html.tizen-tv { --web-navigation-width: clamp(12rem, 12.8vw, 15.5rem); }
 .tizen-tv [role^="menuitem"] { gap: .75rem; padding-inline: .85rem; }
 
 .tizen-tv [data-tv-sidebar-footer] a > .truncate { font-size: inherit; }
+
+.tizen-tv .tv-player-empty { display: flex; align-items: center; justify-content: center; gap: .8rem; color: #aeb8d0; font-size: 1.05rem; line-height: 1.4; }

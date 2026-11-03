@@ -31,6 +31,20 @@ describe('TV spatial navigation', () => {
     expect(cards[0]!.measured).toHaveBeenCalledTimes(3);
   });
 
+  it('remeasures targets when the TV text size changes', async () => {
+    const page = document.createElement('main'); page.id = 'scrollable-page'; document.body.append(page);
+    vi.spyOn(page, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 1920, 1080));
+    const a = button(page, 100, 100, true); button(page, 200, 100, true); const untouched = button(page, 300, 100, true);
+    const nav = createSpatialNavigation(); navigators.push(nav); a.el.focus();
+    nav.move('Right');
+    expect(a.measured).toHaveBeenCalledTimes(1);
+    document.documentElement.toggleAttribute('data-tv-large-text', true);
+    await Promise.resolve();
+    nav.move('Left');
+    expect(untouched.measured).toHaveBeenCalledTimes(2);
+    document.documentElement.removeAttribute('data-tv-large-text');
+  });
+
   it('moves between the readonly search bar and the first result without stopping on Clear',()=>{
     const field=document.createElement('div');field.setAttribute('data-tv-search-field','');document.body.append(field);
     const input=document.createElement('input');input.readOnly=true;field.append(input);const r=new DOMRect(700,0,600,60);vi.spyOn(input,'getClientRects').mockReturnValue([r] as unknown as DOMRectList);vi.spyOn(input,'getBoundingClientRect').mockReturnValue(r);input.scrollIntoView=vi.fn();button(field,1250,10);

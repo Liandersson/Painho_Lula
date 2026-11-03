@@ -8,7 +8,7 @@ A Home tem destaque estático, temas escolhidos nas configurações, artistas fr
 
 O menu ⋯ permite favoritar ou escolher **Não recomendar esta música**. Ocultar tira a música das sugestões futuras e das favoritas; não interrompe uma fila escolhida manualmente. A configuração **Reexibir músicas ocultadas** remove o filtro. Favoritas e preferências são locais, sem conta; não sincronizam automaticamente com outros aparelhos.
 
-As setas, OK e Voltar compartilham o foco com o cursor. Mover o cursor sobre um botão destaca esse alvo; o teclado de busca não perde foco por um movimento acidental. Setas seguradas têm trabalho limitado sem acumular movimentos. Fechar um menu devolve o foco ao botão ou à próxima faixa disponível.
+As setas, OK e Voltar compartilham o foco com o cursor. Mover o cursor sobre um botão destaca esse alvo; o teclado de busca não perde foco por um movimento acidental. Setas seguradas têm trabalho limitado sem acumular movimentos. Fechar um menu devolve o foco ao botão ou à próxima faixa disponível; ao remover a última favorita, o foco vai para encontrar músicas. Telas diferentes abrem no topo, sem herdar a rolagem de outra página. Aumentar o texto invalida imediatamente as medidas de navegação.
 
 **Melhor disponível** prefere o codec suportado e a maior taxa disponível dentro dele. **Compatibilidade · AAC** prioriza AAC, com alternativa Opus quando suportada. **Economia de dados** busca 48–96 kbps; se a fonte só oferecer outra taxa, usa a menor disponível. Faixas DRC são evitadas quando existe uma opção suportada sem DRC. Não existe conversão para áudio sem perdas ou aumento artificial da resolução.
 

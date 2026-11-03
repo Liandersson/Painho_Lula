@@ -46,7 +46,7 @@ export function Menu({ anchor, placement = 'below-end', onClose, label, matchWid
 
   useEffect(() => {
     const menu = panel.current;
-    const returnScope = anchor.closest('section');
+    const returnScope = anchor.closest('section,[data-tv-recents]');
     menu?.querySelector<HTMLElement>('[role^="menuitem"]')?.focus({ preventScroll: true });
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -72,7 +72,10 @@ export function Menu({ anchor, placement = 'below-end', onClose, label, matchWid
       document.removeEventListener('scroll', onScroll, true);
       window.removeEventListener('resize', onClose);
       if (isTizenBuild && (document.activeElement === document.body || menu?.contains(document.activeElement))) {
-        const target = anchor.isConnected ? anchor : returnScope?.isConnected ? returnScope.querySelector<HTMLElement>('[data-tv-primary]') : null;
+        const fallback = returnScope?.isConnected
+          ? returnScope.querySelector<HTMLElement>('[data-tv-primary]') ?? returnScope.querySelector<HTMLElement>('button:not(:disabled),a[href]')
+          : null;
+        const target = anchor.isConnected ? anchor : fallback;
         target?.focus({ preventScroll: true });
       }
     };

@@ -8,6 +8,7 @@ LqMusic 1.4.0 — sua música, do seu jeito na TV
 - Modos de áudio Melhor disponível, Compatibilidade AAC e Economia de dados; seleção por codec suportado e bitrate dentro do codec. Equilíbrio de volume opcional atenua faixas mais altas, sem amplificação artificial.
 - Buffer de áudio limitado para reduzir retenção de memória. A qualidade real continua dependendo da fonte e da saída da TV.
 - Retomada opcional da fila e da posição ao reabrir, sem reprodução automática. Salvamento limitado a 30 faixas e 30 dias.
+- Telas abrem no topo sem herdar a rolagem anterior; estado vazio orienta o primeiro uso e mantém um destino de foco.
 - Configurações em português com texto ampliado, temas, descobertas e reprodução contínua.
 - Mantidas as otimizações 1.3.2: fundo estático, capas animadas desativadas na TV, progresso com atualização limitada e cache da navegação espacial.
 

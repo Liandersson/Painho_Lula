@@ -31,6 +31,7 @@ export function createSpatialNavigation(doc: Document = document) {
   });
   observer.observe(doc.body, { childList: true, subtree: true, attributes: true,
     attributeFilter: ['hidden', 'disabled', 'tabindex', 'aria-hidden', 'aria-disabled', 'aria-modal', 'class', 'style'] });
+  observer.observe(doc.documentElement, { attributes: true, attributeFilter: ['data-tv-large-text'] });
   doc.addEventListener('scroll', invalidate, true);
   doc.addEventListener('load', invalidate, true);
   doc.defaultView?.addEventListener('resize', invalidate);

@@ -1,3 +1,4 @@
+import { useTvRouteReset } from '@/platform/tizen/useTvRouteReset';
 import { startSessionPersistence } from '@/platform/tizen/session';
 import { isTizenBuild } from '@/platform/tizen/services';
 import { useTvPreferences } from '@/platform/tizen/preferences';
@@ -33,6 +34,7 @@ const FullScreenPlayer = lazy(() => import('./FullScreenPlayer').then((m) => ({ 
  */
 export function AppShell() {
   useTizenRemote();
+  useTvRouteReset();
   useEffect(() => {
     if (!isTizenBuild) return;
     const apply = () => document.documentElement.toggleAttribute('data-tv-large-text', useTvPreferences.getState().largeText);
