@@ -79,7 +79,10 @@ export default function TvHome() {
   );
   const mix = [
     ...new Map(
-      (search ? recommendations : [...(taste.seed ? [taste.seed] : []), ...recommendations, ...favorites, ...recent])
+      (search
+        ? recommendations
+        : [...(taste.seed ? [taste.seed] : []), ...(discovery ? recommendations : []), ...favorites, ...recent]
+      )
         .filter((t) => !hidden.includes(t.videoId))
         .map((t) => [t.videoId, t]),
     ).values(),

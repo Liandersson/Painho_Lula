@@ -157,3 +157,20 @@ it('loads a chosen theme on demand and filters hidden recommendations', async ()
     expect.objectContaining({ title: 'Relaxar' }),
   );
 });
+
+it('keeps cached discoveries out of the personal mix when discovery is disabled', () => {
+  useTvPreferences.setState({ favorites: [track('fav')], discovery: false });
+  client.setQueryData(['tv', 'for-you', 'fav'], {
+    candidates: [{ track: track('cached'), isVideo: false }],
+    seedIsVideo: false,
+  });
+  render();
+  const play = [...container.querySelectorAll('button')].find((b) => b.textContent?.includes('Tocar meu mix'))!;
+  act(() => play.click());
+  expect(mocks.playTracks).toHaveBeenLastCalledWith(
+    [expect.objectContaining({ videoId: 'fav' })],
+    0,
+    expect.objectContaining({ title: 'Seu mix' }),
+  );
+  expect(mocks.radio).not.toHaveBeenCalled();
+});
