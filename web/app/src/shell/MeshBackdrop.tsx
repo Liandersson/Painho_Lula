@@ -208,7 +208,7 @@ export function MeshBackdrop({ artworkUrl, playing }: { artworkUrl: string | nul
   const animate = playing && !still && !isTizenBuild;
   // A lost WebGL context remounts the canvas, which starts over with a fresh one.
   const [generation, setGeneration] = useState(0);
-  const [fallback, setFallback] = useState(false);
+  const [fallback, setFallback] = useState(isTizenBuild);
   // Kept outside React: the frame loop reads and writes these.
   const state = useRef({ from: FALLBACK, to: FALLBACK, fadeStart: -Infinity, seconds: 0, wake: () => {} });
 
@@ -223,7 +223,7 @@ export function MeshBackdrop({ artworkUrl, playing }: { artworkUrl: string | nul
         // The first colours show at once; later tracks cross-fade from whatever is on screen.
         s.from = s.fadeStart === -Infinity ? cells : mix(s.from, s.to, Math.min(1, (now - s.fadeStart) / FADE_MS));
         s.to = cells;
-        s.fadeStart = now;
+        s.fadeStart = isTizenBuild ? -Infinity : now;
         s.wake();
       })
       .catch(() => {

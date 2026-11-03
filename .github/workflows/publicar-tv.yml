@@ -43,7 +43,7 @@ jobs:
         run: bash web/tizen-tv/build-web-app.sh
       - name: Testar regressões da TV
         working-directory: web/app
-        run: pnpm exec vitest run src/pages/RecentsPage.test.tsx src/shell/VolumeControl.tizen.test.tsx src/pages/HomePage.tizen.test.tsx src/components/music/play.tizen.test.ts src/shell/useScrubber.test.tsx src/playback/queue/continuation.test.ts src/playback/queue/queue.test.ts src/platform/tizen/spatialNavigation.test.ts src/components/music/SearchField.tizen.test.tsx src/platform/tizen/recentlyPlayed.test.ts src/platform/tizen/useRecentTracking.test.ts
+        run: pnpm exec vitest run
       - name: Gerar arquivos sem assinatura
         run: python3 tools/build_public_release.py
       - name: Publicar release

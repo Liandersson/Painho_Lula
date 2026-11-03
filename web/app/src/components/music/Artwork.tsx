@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { sizedArtwork } from '@/lib/artwork';
 
 interface ArtworkProps {
@@ -20,7 +20,14 @@ const frame = 'relative isolate w-full overflow-hidden bg-joe artwork-stroke';
  * short fade (prompt §3). The 0.5px inner stroke is Apple's "has-borders"
  * treatment (report §1).
  */
-export function Artwork({ src, displayWidth, aspect = 1, radius, className, eager }: ArtworkProps) {
+export function Artwork(props: ArtworkProps) {
+  // A reused card must not inherit the previous cover's loaded/retry state.
+  return <ArtworkImage key={`${props.src}:${props.displayWidth}:${props.aspect ?? 1}`} {...props} />;
+}
+
+function ArtworkImage({ src, displayWidth, aspect = 1, radius, className, eager }: ArtworkProps) {
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(retryTimer.current), []);
   const [loaded, setLoaded] = useState(false);
   // googleusercontent answers bursts with 429 (lib/artwork.ts). A failed load
   // is retried once after a pause, then falls back to YouTube's own URL.
@@ -47,7 +54,9 @@ export function Artwork({ src, displayWidth, aspect = 1, radius, className, eage
           draggable={false}
           onLoad={() => setLoaded(true)}
           onError={() => {
-            if (attempt === 0) setTimeout(() => setAttempt(1), 1500);
+            if (attempt === 0 && retryTimer.current === undefined) {
+              retryTimer.current = setTimeout(() => { setLoaded(false); setAttempt(1); }, 1500);
+            }
             else if (attempt === 1 && url !== src) setAttempt(2);
           }}
         />

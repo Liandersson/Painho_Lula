@@ -90,8 +90,14 @@ export function useScrubber() {
     if (!audio || !element) return;
     for (const node of [element, elapsed.current, remaining.current, mixLabel.current]) node?.setAttribute("data-tv-playback-paint", "");
     let frame = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const cancel = () => { cancelAnimationFrame(frame); clearTimeout(timer); };
+    const setAttribute = (name: string, value: string) => {
+      if (hit.current?.getAttribute(name) !== value) hit.current?.setAttribute(name, value);
+    };
     const draw = () => {
-      cancelAnimationFrame(frame);
+      cancel();
+      if (document.hidden) return;
       const duration = audio.duration;
       // during a loop mix the element is paused under the decks: the mix's own playhead
       const head = getPlayhead();
@@ -100,9 +106,9 @@ export function useScrubber() {
       const base = Math.min(1, Math.max(0, duration > 0 ? time / duration : 0));
       const beat = dragging === null ? getMixBeat() : null;
       const mix = stepPulse(pulse.current, performance.now(), beat, paused);
-      hit.current?.setAttribute('aria-valuenow', String(Math.round(time)));
-      hit.current?.setAttribute('aria-valuemax', String(Number.isFinite(duration) ? duration : 0));
-      hit.current?.setAttribute('aria-valuetext', `${clock(time)} / ${clock(duration)}`);
+      setAttribute('aria-valuenow', String(Math.round(time)));
+      setAttribute('aria-valuemax', String(Number.isFinite(duration) ? duration : 0));
+      setAttribute('aria-valuetext', `${clock(time)} / ${clock(duration)}`);
       element.style.setProperty('--progress', String(base + (1 - base) * mix.cover));
       element.style.opacity = mix.active ? String(mix.alpha) : '';
       const elapsedText = clock(time);
@@ -113,14 +119,22 @@ export function useScrubber() {
         if (span) span.style.opacity = mix.active ? String(1 - mix.cover) : '';
       }
       if (mixLabel.current) mixLabel.current.style.opacity = mix.active ? String(mix.cover * (0.35 + 0.65 * mix.alpha)) : '0';
-      if (!paused || dragging !== null || mix.active || beat) frame = requestAnimationFrame(draw);
+      if (!paused || dragging !== null || mix.active || beat) {
+        // TV progress needs ten paints per second, not two full frame loops
+        // (mini and full player) competing with remote input and audio.
+        if (isTizenBuild) timer = setTimeout(draw, 100);
+        else frame = requestAnimationFrame(draw);
+      }
     };
     repaint.current = draw;
     draw();
+    const onVisibility = () => { if (document.hidden) cancel(); else draw(); };
+    document.addEventListener('visibilitychange', onVisibility);
     const onSeeked = () => draw();
     for (const event of ['seeking', 'seeked', 'durationchange']) audio.addEventListener(event, onSeeked);
     return () => {
-      cancelAnimationFrame(frame);
+      cancel();
+      document.removeEventListener('visibilitychange', onVisibility);
       repaint.current = () => {};
       for (const event of ['seeking', 'seeked', 'durationchange']) audio.removeEventListener(event, onSeeked);
     };

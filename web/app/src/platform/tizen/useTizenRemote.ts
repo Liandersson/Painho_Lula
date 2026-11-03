@@ -14,6 +14,8 @@ export function useTizenRemote() {
   const navigate = useNavigate();
   const location = useLocation();
   const consumedEnter = useRef(false);
+  const pathname = useRef(location.pathname);
+  pathname.current = location.pathname;
   useEffect(() => {
     if (!isTizenBuild) return;
     document.documentElement.classList.add('tizen-tv');
@@ -76,7 +78,7 @@ export function useTizenRemote() {
         const ui = useUi.getState();
         if (ui.fullScreen) ui.setFullScreen(false);
         else if (ui.sidePanel) ui.closeSidePanel();
-        else if (location.pathname !== '/home') {
+        else if (pathname.current !== '/home') {
           if ((window.history.state?.idx ?? 0) > 0) navigate(-1); else navigate('/home');
         } else if (window.confirm('Sair do LqMusic?')) tv?.application?.getCurrentApplication().exit();
       } else if (!editing && !target?.closest('[role="menu"]') && /^Arrow(Left|Right|Up|Down)$/.test(key)) {
@@ -115,5 +117,5 @@ export function useTizenRemote() {
       document.removeEventListener('keydown', onKey, true);
       document.removeEventListener('keyup', onKeyUp, true);
     };
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 }

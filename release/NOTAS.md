@@ -1,14 +1,14 @@
-LqMusic 1.3.1 — Samsung Tizen 9.0+
+LqMusic 1.3.2 — desempenho na Samsung Tizen 9.0+
 
-- Nova identidade LqMusic na TV, na interface e no instalador.
-- Novo ícone roxo fornecido pelo mantenedor, também usado na barra lateral e no favicon.
-- Guias de instalação e instruções para Codex/Claude Code atualizados.
-- IDs de instalação e chaves locais preservados para permitir atualização com o mesmo certificado de autor e conservar o histórico.
+- Navegação reaproveita as medidas da tela quando o foco muda sem rolagem; mudanças de conteúdo, classes, modais e rolagem continuam invalidando o cache.
+- Registro das teclas do controle permanece ativo entre trocas de página.
+- Fundo do player usa um canvas estático de 64 × 40, em vez de WebGL em resolução de tela. Cores da capa preservadas, sem transição contínua.
+- Capas animadas Apple e brilho desfocado do player desativados na TV para reduzir decodificação, rede e composição.
+- Barra de progresso atualiza até dez vezes por segundo na TV, preservando ajuste imediato pelo controle; suspende o trabalho quando o app fica oculto.
+- Capas limpam tentativas pendentes ao sair da tela e reiniciam seu estado quando a imagem muda.
 
-O repositório continua temporariamente no endereço Liandersson/Painho_Lula, por escolha do mantenedor. O nome visível já é LqMusic.
+Baixe LqMusic-TV-1.3.2-Instalacao.zip e siga LEIA-ME.md. O pacote não contém assinatura ou certificados. Para atualizar mantendo a instalação e o histórico, use o mesmo certificado de autor. Fonte correspondente: LqMusic-TV-1.3.2-Source.zip; confira SHA256SUMS.txt.
 
-Baixe **LqMusic-TV-1.3.1-Instalacao.zip**, extraia no computador Linux e siga LEIA-ME.md. O pacote é sem assinatura; cada usuário precisa do próprio certificado Samsung TV com o DUID autorizado. Não há WGT universal. Para atualizar uma instalação anterior, preserve seu certificado de autor.
-
-A fonte correspondente está em **LqMusic-TV-1.3.1-Source.zip**; confira SHA256SUMS.txt. O app exige Tizen 9.0+. Modelo usado no desenvolvimento: UN50CU7700GXZD atualizada. Outros modelos e a nova identidade visual ainda precisam de conferência física. Recomendações não garantem gênero exato; tradução e reprodução dependem de serviços externos. Integrações de contas não têm paridade com Android.
+As reduções de trabalho são verificadas por testes automatizados. Fluidez, latência e memória na UN50CU7700GXZD precisam de medição física; não há promessa de FPS ou compatibilidade universal. Não foram alterados IDs do app nem chaves de histórico. Reprodução e letras continuam dependendo de serviços externos.
 
 Base original BitChord, de kushagrasinghx e colaboradores. GPL-3.0 e licenças de terceiros preservadas em LICENSE e NOTICE.md.
