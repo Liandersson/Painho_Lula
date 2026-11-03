@@ -303,7 +303,7 @@ export function FullScreenPlayer() {
           >
             {nowPlaying.artworkUrl && (
               <>
-                <img
+                {!isTizenBuild && <img
                   key={`glow-${nowPlaying.artworkUrl}`}
                   // The radiosity glow: a small copy, blurred and saturated, behind the artwork.
                   className={`${artworkLayer} -z-1 translate-y-2 scale-96 blur-[20px] saturate-200 data-loaded:opacity-40`}
@@ -312,7 +312,7 @@ export function FullScreenPlayer() {
                   referrerPolicy="no-referrer"
                   decoding="async"
                   onLoad={(e) => e.currentTarget.setAttribute('data-loaded', '')}
-                />
+                />}
                 <img
                   key={nowPlaying.artworkUrl}
                   className={`${artworkLayer} bg-[#ffffff12] shadow-[0_4px_10px_#0000001a] data-loaded:opacity-100`}

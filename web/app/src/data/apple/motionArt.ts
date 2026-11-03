@@ -1,3 +1,4 @@
+import { isTizenBuild } from '@/platform/tizen/services';
 import { useQuery } from '@tanstack/react-query';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -104,7 +105,7 @@ onGranted(() => void queryClient.invalidateQueries({ queryKey: ['apple', 'motion
 function useMotionAllowed(): boolean {
   const enabled = useAppleSettings((s) => s.motion);
   const still = useReducedMotion();
-  return enabled && !still && !metered();
+  return !isTizenBuild && enabled && !still && !metered();
 }
 
 const QUERY = { staleTime: Infinity, gcTime: 30 * 60_000, retry: false } as const;

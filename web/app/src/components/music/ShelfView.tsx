@@ -36,7 +36,8 @@ export function ShelfScroller({ kind, children }: { kind: ShelfKind; children: R
   const measure = useCallback(() => {
     const el = list.current;
     if (!el) return;
-    setEdges({ start: el.scrollLeft <= 2, end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2 });
+    const start = el.scrollLeft <= 2, end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+    setEdges(previous => previous.start === start && previous.end === end ? previous : { start, end });
   }, []);
 
   useEffect(() => {

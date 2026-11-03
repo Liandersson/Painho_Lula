@@ -28,9 +28,10 @@ export class ContinuationSession {
     return this.ids.has(track.videoId) || this.recordingKeys(track).some(key => this.recordings.has(key));
   }
   offer(candidates: Candidate[], preferVideo = false) { this.pool = candidates.slice(0, 60); this.preferVideo = preferVideo; this.deferFetch(); }
-  take(existing: Track[], count: number) {
+  take(existing: Track[], count: number, hidden: readonly string[] = []) {
     if (!this.seed || this.full) return [];
     // Preserve the provider's relevance order and catalogue/video preference.
-    return extendStation(existing, this.pool.filter(c => !c.track.unavailable && !this.seen(c.track)), count, this.preferVideo);
+    const blocked = new Set(hidden);
+    return extendStation(existing, this.pool.filter(c => !c.track.unavailable && !blocked.has(c.track.videoId) && !this.seen(c.track)), count, this.preferVideo);
   }
 }

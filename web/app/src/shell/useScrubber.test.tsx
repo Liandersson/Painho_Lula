@@ -29,3 +29,28 @@ it('TV compact progress adjusts only after OK, and leaves edit mode on blur',()=
  act(()=>slider.focus());key('Enter');act(()=>container.querySelector('button')!.focus());expect(slider.hasAttribute('data-tv-seek-editing')).toBe(false);
  act(()=>root.unmount());container.remove();mocks.audio=null;
 });
+
+it('limits TV progress paints and suspends them while the app is hidden', () => {
+ Object.assign(globalThis, {IS_REACT_ACT_ENVIRONMENT:true});
+ vi.useFakeTimers();
+ const audio=document.createElement('audio');
+ Object.defineProperty(audio,'duration',{value:120});
+ Object.defineProperty(audio,'paused',{value:false});
+ mocks.audio=audio;
+ const hidden=vi.spyOn(document,'hidden','get').mockReturnValue(false);
+ const raf=vi.spyOn(globalThis,'requestAnimationFrame');
+ function View(){const {bar,handlers}=useScrubber();return <div {...handlers}><div ref={bar}/></div>;}
+ const container=document.createElement('div');document.body.append(container);const root=createRoot(container);
+ try {
+  act(()=>root.render(<View/>));
+  const bar=container.querySelector('[role="slider"]')!.firstElementChild as HTMLElement;
+  const paints=vi.spyOn(bar.style,'setProperty');
+  act(()=>vi.advanceTimersByTime(1000));
+  expect(paints.mock.calls.filter(([name]) => name === '--progress')).toHaveLength(10);expect(raf).not.toHaveBeenCalled();
+  hidden.mockReturnValue(true);document.dispatchEvent(new Event('visibilitychange'));
+  act(()=>vi.advanceTimersByTime(1000));expect(paints.mock.calls.filter(([name]) => name === '--progress')).toHaveLength(10);
+  audio.currentTime=42;hidden.mockReturnValue(false);document.dispatchEvent(new Event('visibilitychange'));
+  expect(container.querySelector('[role="slider"]')!.getAttribute('aria-valuenow')).toBe('42');
+  act(()=>root.unmount());expect(vi.getTimerCount()).toBe(0);
+ } finally {container.remove();mocks.audio=null;vi.useRealTimers();vi.restoreAllMocks();}
+});

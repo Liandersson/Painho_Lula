@@ -16,6 +16,35 @@ function button(parent: HTMLElement, x: number, y = 0, primary = false) {
 afterEach(() => { navigators.splice(0).forEach(n => n.dispose()); document.body.innerHTML = ''; vi.restoreAllMocks(); });
 
 describe('TV spatial navigation', () => {
+  it('measures a large stationary page once across repeated navigation', async () => {
+    const page = document.createElement('main'); page.id = 'scrollable-page'; document.body.append(page);
+    vi.spyOn(page, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 1920, 1080));
+    const cards = Array.from({ length: 200 }, (_, i) => button(page, i * 50, 100, true));
+    const nav = createSpatialNavigation(); navigators.push(nav); cards[0]!.el.focus();
+    for (let i = 0; i < 10; i++) { nav.move('Right'); await Promise.resolve(); }
+    expect(document.activeElement).toBe(cards[10]!.el);
+    expect(cards.reduce((total, card) => total + card.measured.mock.calls.length, 0)).toBe(210);
+    // CSS changes and scrolling still discard geometry before the next move.
+    cards[11]!.el.className = 'changed'; await Promise.resolve(); nav.move('Right');
+    expect(cards[0]!.measured).toHaveBeenCalledTimes(2);
+    page.dispatchEvent(new Event('scroll')); nav.move('Left');
+    expect(cards[0]!.measured).toHaveBeenCalledTimes(3);
+  });
+
+  it('remeasures targets when the TV text size changes', async () => {
+    const page = document.createElement('main'); page.id = 'scrollable-page'; document.body.append(page);
+    vi.spyOn(page, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 1920, 1080));
+    const a = button(page, 100, 100, true); button(page, 200, 100, true); const untouched = button(page, 300, 100, true);
+    const nav = createSpatialNavigation(); navigators.push(nav); a.el.focus();
+    nav.move('Right');
+    expect(a.measured).toHaveBeenCalledTimes(1);
+    document.documentElement.toggleAttribute('data-tv-large-text', true);
+    await Promise.resolve();
+    nav.move('Left');
+    expect(untouched.measured).toHaveBeenCalledTimes(2);
+    document.documentElement.removeAttribute('data-tv-large-text');
+  });
+
   it('moves between the readonly search bar and the first result without stopping on Clear',()=>{
     const field=document.createElement('div');field.setAttribute('data-tv-search-field','');document.body.append(field);
     const input=document.createElement('input');input.readOnly=true;field.append(input);const r=new DOMRect(700,0,600,60);vi.spyOn(input,'getClientRects').mockReturnValue([r] as unknown as DOMRectList);vi.spyOn(input,'getBoundingClientRect').mockReturnValue(r);input.scrollIntoView=vi.fn();button(field,1250,10);

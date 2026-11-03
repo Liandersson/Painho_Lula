@@ -1,3 +1,4 @@
+import TvHome from '@/platform/tizen/TvHome';
 import { useEffect, useRef } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { Shelves, TrackShelf } from '@/components/music/ShelfView';
@@ -28,7 +29,7 @@ function useRecentlyPlayed(): Track[] {
 }
 
 /** YouTube Music's home feed, as Apple's Home: shelf after shelf, more as you scroll. */
-export default function HomePage() {
+function StandardHomePage() {
   const { missing } = useYouTubeReady();
   const home = useHome();
   const ranked = useRecentlyPlayed();
@@ -94,3 +95,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+export default function HomePage() { return isTizenBuild ? <TvHome /> : <StandardHomePage />; }

@@ -30,7 +30,8 @@ export function createSpatialNavigation(doc: Document = document) {
     if (records.some(record => !((record.type === 'childList' || (record.type === 'attributes' && record.attributeName === 'style')) && (record.target as HTMLElement).hasAttribute('data-tv-playback-paint')))) invalidate();
   });
   observer.observe(doc.body, { childList: true, subtree: true, attributes: true,
-    attributeFilter: ['hidden', 'disabled', 'tabindex', 'aria-hidden', 'aria-disabled', 'aria-modal', 'style'] });
+    attributeFilter: ['hidden', 'disabled', 'tabindex', 'aria-hidden', 'aria-disabled', 'aria-modal', 'class', 'style'] });
+  observer.observe(doc.documentElement, { attributes: true, attributeFilter: ['data-tv-large-text'] });
   doc.addEventListener('scroll', invalidate, true);
   doc.addEventListener('load', invalidate, true);
   doc.defaultView?.addEventListener('resize', invalidate);
@@ -40,6 +41,12 @@ export function createSpatialNavigation(doc: Document = document) {
     if (cached && cachedModal === modal && performance.now() - measuredAt < 250 && cached.every(item => item.element.isConnected)) return cached;
     cachedModal = modal;
     const styleCache = new Map<Element, CSSStyleDeclaration>();
+    const boundsCache = new Map<Element, DOMRect>();
+    const boundsOf = (el: Element) => {
+      let rect = boundsCache.get(el);
+      if (!rect) { rect = el.getBoundingClientRect(); boundsCache.set(el, rect); }
+      return rect;
+    };
     const styleOf = (el: Element) => {
       let style = styleCache.get(el);
       if (!style) { style = getComputedStyle(el); styleCache.set(el, style); }
@@ -55,8 +62,8 @@ export function createSpatialNavigation(doc: Document = document) {
       }
       return true;
     }).map(element => {
-      const rect = element.getBoundingClientRect();
-      return { element, rect, horizontallyVisible: horizontallyVisible(element, rect, styleOf) };
+      const rect = boundsOf(element);
+      return { element, rect, horizontallyVisible: horizontallyVisible(element, rect, styleOf, boundsOf) };
     });
     measuredAt = performance.now();
     return cached;
@@ -69,13 +76,14 @@ export function createSpatialNavigation(doc: Document = document) {
       if (element.closest('[data-tv-sidebar]')) invalidate();
       return;
     }
+    let scrolled = false;
     // Reveal the horizontal shelf independently. scrollIntoView also scrolls
     // the page/body and can strand focus behind the sticky header or player.
     for (let parent = element.parentElement; parent && parent !== page; parent = parent.parentElement) {
       if (parent.scrollWidth <= parent.clientWidth || !/auto|scroll/.test(getComputedStyle(parent).overflowX)) continue;
       const bounds = parent.getBoundingClientRect(), rect = element.getBoundingClientRect();
-      if (rect.left < bounds.left + 12) parent.scrollLeft += rect.left - bounds.left - 12;
-      else if (rect.right > bounds.right - 12) parent.scrollLeft += rect.right - bounds.right + 12;
+      if (rect.left < bounds.left + 12) { parent.scrollLeft += rect.left - bounds.left - 12; scrolled = true; }
+      else if (rect.right > bounds.right - 12) { parent.scrollLeft += rect.right - bounds.right + 12; scrolled = true; }
     }
     const bounds = page.getBoundingClientRect(), rect = element.getBoundingClientRect();
     const reservedPlayer = !!page.querySelector('[data-tv-home]');
@@ -88,15 +96,16 @@ export function createSpatialNavigation(doc: Document = document) {
       const smooth=!!element.closest('[data-tv-recents]') && now-lastScrollAt>220 && !doc.defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if(smooth) page.scrollTo({top:target,behavior:'smooth'}); else page.scrollTop=target;
       lastScrollAt=now;
+      scrolled = true;
     }
     // A held key may arrive before the browser dispatches its scroll event.
-    invalidate();
+    if (scrolled) invalidate();
   }
 
-  function horizontallyVisible(element: HTMLElement, rect: DOMRect, styleOf: (el: Element) => CSSStyleDeclaration) {
+  function horizontallyVisible(element: HTMLElement, rect: DOMRect, styleOf: (el: Element) => CSSStyleDeclaration, boundsOf: (el: Element) => DOMRect) {
     for (let parent = element.parentElement; parent && parent !== doc.body; parent = parent.parentElement) {
       if (parent.scrollWidth <= parent.clientWidth || !/auto|scroll/.test(styleOf(parent).overflowX)) continue;
-      const bounds = parent.getBoundingClientRect();
+      const bounds = boundsOf(parent);
       if (rect.right <= bounds.left || rect.left >= bounds.right) return false;
     }
     return true;
@@ -146,7 +155,7 @@ export function createSpatialNavigation(doc: Document = document) {
       }
       if (sidebar && direction === 'Right') {
         const content = items.filter(item => item.element.closest('#scrollable-page'));
-        const next = content.find(item => item.element === playerReturn) ?? content.find(item => item.element.hasAttribute('data-tv-primary')) ?? content[0];
+        const next = content.find(item => item.element === playerReturn) ?? content.find(item => item.element.hasAttribute('data-tv-default-focus')) ?? content.find(item => item.element.hasAttribute('data-tv-primary')) ?? content[0];
         if (next) { next.element.focus({preventScroll:true}); reveal(next.element); }
         return;
       }
@@ -182,7 +191,7 @@ export function createSpatialNavigation(doc: Document = document) {
         const play=items.find(item=>item.element.hasAttribute('data-tv-player-toggle'));play?.element.focus({preventScroll:true});return;
       }
       const settings = active.closest('[data-tv-settings]');
-      if (settings && !horizontal) {
+      if (settings && !horizontal && !active.closest('.tv-settings-topics')) {
         const controls = items.filter(item => settings.contains(item.element));
         const index = controls.findIndex(item => item.element === active);
         const next = controls[index + (direction === 'Down' ? 1 : -1)];

@@ -1,3 +1,4 @@
+import { isTizenBuild } from '@/platform/tizen/services';
 import { PrefetchLink } from '@/components/PrefetchLink';
 import { PlayIcon } from '@/components/icons/Transport';
 import type { MusicItem } from '@/data/music/types';
@@ -137,6 +138,14 @@ export function CircleLockup({ item, width = 160 }: { item: MusicItem; width?: n
 /** A song row inside a shelf (report §2, track lockup): 40px art, title, byline. */
 export function TrackLockup({ item, onPlay }: { item: MusicItem; onPlay?: () => void }) {
   const play = onPlay ?? (() => playTrack(item));
+  if (isTizenBuild) return <div data-tv-card data-tv-card-key={item.id} className="tv-track-card tv-track-card-v2">
+    <button data-tv-primary className="tv-track-hit" aria-label={`Tocar ${item.title}, ${item.artists.map(a => a.name).join(', ')}`} onClick={play}>
+      <Artwork src={item.thumbnail} displayWidth={88} radius="12px"/>
+      <span className="tv-track-copy"><span className="tv-track-name">{item.title}{item.explicit && <ExplicitBadge/>}</span><span className="tv-track-byline">{item.artists.map(a => a.name).join(', ') || item.subtitle}</span></span>
+      <span className="tv-track-play" aria-hidden="true"><PlayIcon size={24}/></span>
+    </button>
+    {isPlayable(item) && <TrackMenu track={toTrack(item)} className="tv-track-options"/>}
+  </div>;
   return (
     // 52px art column (40 + 12 gap), content, menu; 55px tall.
     <div data-tv-card data-tv-card-key={item.id} className="tv-track-card group/track grid h-[55px] grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-x-3 py-[7.5px] pr-3.5 pl-0">

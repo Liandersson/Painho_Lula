@@ -1,3 +1,7 @@
+import { useTvRouteReset } from '@/platform/tizen/useTvRouteReset';
+import { startSessionPersistence } from '@/platform/tizen/session';
+import { isTizenBuild } from '@/platform/tizen/services';
+import { useTvPreferences } from '@/platform/tizen/preferences';
 import { lazy, Suspense, useEffect } from 'react';
 import { resumeSession } from '@/party/listenTogether';
 import { startPartySync } from '@/party/partySync';
@@ -30,7 +34,14 @@ const FullScreenPlayer = lazy(() => import('./FullScreenPlayer').then((m) => ({ 
  */
 export function AppShell() {
   useTizenRemote();
+  useTvRouteReset();
+  useEffect(() => {
+    if (!isTizenBuild) return;
+    const apply = () => document.documentElement.toggleAttribute('data-tv-large-text', useTvPreferences.getState().largeText);
+    apply(); return useTvPreferences.subscribe((state, previous) => { if (state.largeText !== previous.largeText) apply(); });
+  }, []);
   useRecentTracking();
+  useEffect(() => { if (isTizenBuild) return startSessionPersistence(); }, []);
   useKeyboardShortcuts();
   useDiscordPresence();
   // Listen Together: pick a party back up after a reload, and keep the player in step with it.
@@ -39,9 +50,9 @@ export function AppShell() {
     return startPartySync();
   }, []);
   // Plays into the account's YouTube Music history (Settings › Share Listening Activity).
-  useEffect(() => startHistoryReporting(), []);
+  useEffect(() => { if (!isTizenBuild) return startHistoryReporting(); }, []);
   // Counts this tab in the "listening now" figure beside the phone and PC apps.
-  useEffect(() => startLivePresence(), []);
+  useEffect(() => { if (!isTizenBuild) return startLivePresence(); }, []);
   const extension = useExtension();
   const bannerDismissed = useUi((s) => s.installBannerDismissed);
   const dismissBanner = useUi((s) => s.dismissInstallBanner);

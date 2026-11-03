@@ -1,3 +1,4 @@
+import { createDirectionGate, installPointerNavigation } from './input';
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { usePlayer } from '@/state/player';
@@ -14,16 +15,23 @@ export function useTizenRemote() {
   const navigate = useNavigate();
   const location = useLocation();
   const consumedEnter = useRef(false);
+  const pathname = useRef(location.pathname);
+  pathname.current = location.pathname;
   useEffect(() => {
     if (!isTizenBuild) return;
     document.documentElement.classList.add('tizen-tv');
     const tv = (globalThis as typeof globalThis & { tizen?: TVApi }).tizen;
     const navigation = createSpatialNavigation();
+    const directions = createDirectionGate();
+    const removePointer = installPointerNavigation();
+    const onBlur = () => directions.release();
+    window.addEventListener('blur', onBlur);
     for (const key of ['MediaPlay', 'MediaPause', 'MediaPlayPause', 'MediaStop', 'MediaTrackNext', 'MediaTrackPrevious', 'MediaFastForward', 'MediaRewind', 'ChannelUp', 'ChannelDown']) {
       try { tv?.tvinputdevice?.registerKey(key); } catch { /* Key not supplied by this remote/firmware. */ }
     }
     const onKey = (event: KeyboardEvent) => {
       const code = event.keyCode;
+      document.documentElement.setAttribute('data-tv-input', 'remote');
       const key = tvKey(event);
       const target = document.activeElement as HTMLElement | null;
       const controlInput = target?.tagName === 'INPUT' && /^(checkbox|radio|button|submit|reset)$/.test((target as HTMLInputElement).type);
@@ -76,10 +84,11 @@ export function useTizenRemote() {
         const ui = useUi.getState();
         if (ui.fullScreen) ui.setFullScreen(false);
         else if (ui.sidePanel) ui.closeSidePanel();
-        else if (location.pathname !== '/home') {
+        else if (pathname.current !== '/home') {
           if ((window.history.state?.idx ?? 0) > 0) navigate(-1); else navigate('/home');
         } else if (window.confirm('Sair do LqMusic?')) tv?.application?.getCurrentApplication().exit();
       } else if (!editing && !target?.closest('[role="menu"]') && /^Arrow(Left|Right|Up|Down)$/.test(key)) {
+        if (!directions.accept(key, performance.now())) { event.preventDefault(); event.stopPropagation(); return; }
         const option = target?.closest<HTMLElement>('[role="option"]');
         const list = option?.closest('[role="listbox"]');
         if (option && list && (key === 'ArrowUp' || key === 'ArrowDown')) {
@@ -103,6 +112,7 @@ export function useTizenRemote() {
       event.stopPropagation();
     };
     const onKeyUp = (event: KeyboardEvent) => {
+      directions.release(tvKey(event));
       if (tvKey(event) === 'Enter' && consumedEnter.current) {
         consumedEnter.current = false;
         event.preventDefault(); event.stopPropagation();
@@ -112,8 +122,10 @@ export function useTizenRemote() {
     document.addEventListener('keyup', onKeyUp, true);
     return () => {
       navigation.dispose();
+      removePointer();
+      window.removeEventListener('blur', onBlur);
       document.removeEventListener('keydown', onKey, true);
       document.removeEventListener('keyup', onKeyUp, true);
     };
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 }
